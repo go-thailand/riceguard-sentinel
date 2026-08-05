@@ -1,5 +1,6 @@
 ---
 import Icon from "./Icon.astro";
+import { t } from "../i18n/ui";
 
 // Province detail modal — hidden by default (.rg-modal { display:none }).
 // Content is filled in by RGMap.openProvinceModal() on province click.
@@ -28,7 +29,8 @@ import Icon from "./Icon.astro";
       <p><span class="rg-status" id="rg-prov-status">สถานะ</span></p>
       <p id="rg-prov-desc">รายละเอียดพื้นที่วิจัย</p>
       <a class="btn btn-primary" id="rg-prov-link" href="/province">
-        ดูข้อมูลหน้าแปลง <Icon name="arrow-right" size={16} />
+        <span data-i18n="map.viewDashboard">{t("map.viewDashboard")}</span>
+        <Icon name="arrow-right" size={16} />
       </a>
     </div>
   </div>

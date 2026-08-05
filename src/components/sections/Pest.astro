@@ -1,18 +1,19 @@
 ---
 import SectionHeader from "../SectionHeader.astro";
 import Icon from "../Icon.astro";
+import { t } from "../../i18n/ui";
 
 const tools = [
-  { icon: "scan-search", key: "pest.tool0.th", th: "ตรวจจับด้วยภาพ", en: "Image detection · 7,000-pest dataset" },
-  { icon: "audio-lines", key: "pest.tool1.th", th: "คลื่นอัลตราโซนิก", en: "AI-tuned ultrasonic emitter" },
-  { icon: "bug", key: "pest.tool2.th", th: "กับดักฟีโรโมนอัจฉริยะ", en: "Smart pheromone trap + counter" },
-  { icon: "bird", key: "pest.tool3.th", th: "เสียงไล่นก AI", en: "AI predator bird-calls" },
+  { icon: "scan-search", key: "pest.tool0.th", en: "Image detection · 7,000-pest dataset" },
+  { icon: "audio-lines", key: "pest.tool1.th", en: "AI-tuned ultrasonic emitter" },
+  { icon: "bug", key: "pest.tool2.th", en: "Smart pheromone trap + counter" },
+  { icon: "bird", key: "pest.tool3.th", en: "AI predator bird-calls" },
 ];
 
 const substats = [
-  { value: "120+", label: "ชนิดศัตรูพืช" },
-  { value: "94%", label: "ความแม่นยำ" },
-  { value: "รายวัน", label: "ข้อมูลเพิ่มขึ้น" },
+  { value: "120+", labelKey: "pest.substat0.label" },
+  { value: "94%", labelKey: "pest.substat1.label" },
+  { valueKey: "pest.substat2.value", labelKey: "pest.substat2.label" },
 ];
 ---
 
@@ -21,29 +22,24 @@ const substats = [
     <SectionHeader
       num="05"
       labelKey="pest.label"
-      labelTh="การจัดการศัตรูพืชอย่างชาญฉลาด"
       labelEn="Smart Pest Management"
       h2Key="pest.h2"
-      h2Th="ใช้สารเคมีเท่าที่จำเป็น"
-      cap="Only the pesticide that's actually needed"
+      capKey="cap.pest"
     />
     <p class="rg-lead" data-reveal>
-      <span data-i18n="pest.lead"
-        >ด้วยฐานภาพศัตรูพืชกว่า 7,000 ชนิด RiceGuard
-        ช่วยตรวจจับชนิดที่ถูกต้องและแจ้งปริมาณสารที่เหมาะสม</span
-      > — right pest, right dose, right time.
+      <span data-i18n="pest.lead">{t("pest.lead")}</span> — right pest, right dose, right time.
     </p>
     <div class="rg-pest-grid">
       {
-        tools.map((t, i) => (
+        tools.map((tool, i) => (
           <div class="card rg-pest-card" data-reveal data-reveal-delay={String(i)}>
             <div class="rg-pest-icon">
-              <Icon name={t.icon} size={22} class="rg-pest-svg" />
+              <Icon name={tool.icon} size={22} class="rg-pest-svg" />
             </div>
             <h3 class="rg-h4">
-              <span data-i18n={t.key}>{t.th}</span>
+              <span data-i18n={tool.key}>{t(tool.key)}</span>
             </h3>
-            <p class="rg-pest-en">{t.en}</p>
+            <p class="rg-pest-en">{tool.en}</p>
           </div>
         ))
       }
@@ -53,13 +49,13 @@ const substats = [
     <div class="rg-dataset" data-reveal>
       <div class="rg-dataset-counter">
         <span class="rg-dataset-count">7,000+</span>
-        <span class="rg-dataset-count-label">ภาพศัตรูพืชในฐานข้อมูล — และเพิ่มขึ้นทุกวัน</span>
+        <span class="rg-dataset-count-label" data-i18n="pest.dataset.label">{t("pest.dataset.label")}</span>
         <div class="rg-dataset-substats">
           {
             substats.map((s) => (
               <div class="rg-dataset-substat">
-                <b>{s.value}</b>
-                <span>{s.label}</span>
+                <b>{s.valueKey ? <span data-i18n={s.valueKey}>{t(s.valueKey)}</span> : s.value}</b>
+                <span data-i18n={s.labelKey}>{t(s.labelKey)}</span>
               </div>
             ))
           }
@@ -75,7 +71,7 @@ const substats = [
     <div class="rg-note-strip" data-reveal>
       <Icon name="shield-check" size={22} class="rg-note-svg" />
       <p>
-        <span data-i18n="pest.notestrip">ระบบป้องกัน ไม่ใช่แค่ตรวจจับ</span> — an integrated
+        <span data-i18n="pest.notestrip">{t("pest.notestrip")}</span> — an integrated
         prevention system, not just detection.
       </p>
     </div>

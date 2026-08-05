@@ -1,10 +1,12 @@
 ---
+import { t } from "../i18n/ui";
+
 const navLinks = [
-  { href: "#story", key: "nav.story", th: "เรื่องราว", en: "Story" },
-  { href: "#how", key: "nav.how", th: "ทำงานอย่างไร", en: "How" },
-  { href: "#device", key: "nav.device", th: "อุปกรณ์", en: "Device" },
-  { href: "#knowledge", key: "nav.knowledge", th: "ฐานความรู้", en: "Knowledge" },
-  { href: "#contact", key: "nav.contact", th: "ติดต่อ", en: "Contact" },
+  { href: "#story", key: "nav.story", en: "Story" },
+  { href: "#how", key: "nav.how", en: "How" },
+  { href: "#device", key: "nav.device", en: "Device" },
+  { href: "#knowledge", key: "nav.knowledge", en: "Knowledge" },
+  { href: "#contact", key: "nav.contact", en: "Contact" },
 ];
 ---
 
@@ -12,7 +14,7 @@ const navLinks = [
   {
     navLinks.map((link) => (
       <a href={link.href} class="rg-navlink rg-mobile-link">
-        <span data-i18n={link.key}>{link.th}</span>{" "}
+        <span data-i18n={link.key}>{t(link.key)}</span>{" "}
         <span class="rg-navlink-en">/ {link.en}</span>
       </a>
     ))

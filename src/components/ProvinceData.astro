@@ -1,9 +1,30 @@
 ---
-import { provinces, statusLabel } from "../data/provinces";
+import { provinces, regionAnchors } from "../data/provinces";
+import { t, languages } from "../i18n/ui";
 
 // JSON data island read by the client-side (is:inline) map script.
-// provinces.ts stays the single source of truth.
-const mapData = provinces.map((p) => ({ ...p, statusLabel: statusLabel[p.status] }));
+// Each translatable field is pre-resolved into all 3 languages so the map and
+// its modal can switch instantly without another lookup. Source = ui.ts.
+const tri = (key: string) =>
+  Object.fromEntries(languages.map((l) => [l, t(key, l)])) as Record<string, string>;
+
+const mapData = {
+  provinces: provinces.map((p) => ({
+    slug: p.slug,
+    status: p.status,
+    lat: p.lat,
+    lng: p.lng,
+    name: tri(`province.${p.slug}.name`),
+    note: tri(`province.${p.slug}.note`),
+    region: tri(`region.${p.region}`),
+    statusLabel: tri(`status.${p.status}`),
+  })),
+  regions: regionAnchors.map((r) => ({
+    lat: r.lat,
+    lng: r.lng,
+    label: tri(`region.${r.region}`),
+  })),
+};
 ---
 
 <script type="application/json" id="rg-province-data" is:inline set:html={JSON.stringify(mapData)}

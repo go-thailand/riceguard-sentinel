@@ -1,48 +1,34 @@
 ---
 import Icon from "../Icon.astro";
 import Modal from "../Modal.astro";
+import { t } from "../../i18n/ui";
 
 const specs = [
-  { icon: "ruler", value: "4 m", key: "device.spec0.th", th: "ความสูง" },
-  { icon: "sun", value: "2×200W", key: "device.spec1.th", th: "โซลาร์ 2 หน้า" },
-  { icon: "battery-charging", value: "5–11 วัน", key: "device.spec2.th", th: "สำรองไฟ" },
-  { icon: "gauge", value: "18", key: "device.spec3.th", th: "การวัด" },
-  { icon: "shield", value: "IP68", key: "device.spec4.th", th: "กันน้ำ" },
-  { icon: "zap", value: "40 TOPS", key: "device.spec5.th", th: "AI ที่ขอบ" },
+  { icon: "ruler", value: "4 m", key: "device.spec0.th" },
+  { icon: "sun", value: "2×200W", key: "device.spec1.th" },
+  { icon: "battery-charging", value: "5–11 วัน", key: "device.spec2.th" },
+  { icon: "gauge", value: "18", key: "device.spec3.th" },
+  { icon: "shield", value: "IP68", key: "device.spec4.th" },
+  { icon: "zap", value: "40 TOPS", key: "device.spec5.th" },
 ];
 
 const features = [
-  {
-    icon: "wrench",
-    title: "ช่องซ่อมบำรุงล่าง",
-    desc: "เข้าถึงแบตเตอรี่และตัวควบคุมไฟได้จากพื้น โดยไม่ต้องรื้อเสา",
-  },
-  {
-    icon: "wrench",
-    title: "ช่องซ่อมบำรุงบน",
-    desc: "เปลี่ยนกล้องและเซ็นเซอร์ส่วนบนได้อย่างปลอดภัย",
-  },
-  {
-    icon: "zap",
-    title: "สายล่อฟ้า",
-    desc: "ป้องกันฟ้าผ่าตามมาตรฐาน ปกป้องอุปกรณ์อิเล็กทรอนิกส์",
-  },
-  {
-    icon: "anchor",
-    title: "ฐานรากคอนกรีต",
-    desc: "ยึดเสาให้มั่นคงในดินนาที่อ่อนนุ่มและมีน้ำขัง",
-  },
+  { icon: "wrench", titleKey: "device.feat0.title", descKey: "device.feat0.desc" },
+  { icon: "wrench", titleKey: "device.feat1.title", descKey: "device.feat1.desc" },
+  { icon: "zap", titleKey: "device.feat2.title", descKey: "device.feat2.desc" },
+  { icon: "anchor", titleKey: "device.feat3.title", descKey: "device.feat3.desc" },
 ];
 
+// Modal spec rows: label key + value (key `v`, or language-neutral `vRaw`).
 const fullSpecs = [
-  ["ความสูงรวม", "4 เมตร"],
-  ["โซลาร์เซลล์", "2 × 200W (สองหน้า)"],
-  ["แบตเตอรี่สำรอง", "5–11 วัน"],
-  ["จำนวนการวัด", "18 พารามิเตอร์"],
-  ["มาตรฐานกันน้ำ", "IP68"],
-  ["หน่วยประมวลผล AI", "40 TOPS (Edge)"],
-  ["เครือข่าย", "LoRa + 4G สำรอง"],
-  ["โครงสร้าง", "เสาปริซึมหกเหลี่ยมบิด · PE-signed"],
+  { l: "device.full.height.l", v: "device.full.height.v" },
+  { l: "device.full.solar.l", v: "device.full.solar.v" },
+  { l: "device.full.battery.l", v: "device.full.battery.v" },
+  { l: "device.full.measure.l", v: "device.full.measure.v" },
+  { l: "device.full.ip.l", vRaw: "IP68" },
+  { l: "device.full.ai.l", vRaw: "40 TOPS (Edge)" },
+  { l: "device.full.net.l", v: "device.full.net.v" },
+  { l: "device.full.struct.l", v: "device.full.struct.v" },
 ];
 ---
 
@@ -52,7 +38,7 @@ const fullSpecs = [
       <span class="rg-secnum-n">03</span>
       <span class="rg-secnum-line" style="background:#C9A227;"></span>
       <span class="rg-secnum-label">
-        <span data-i18n="device.label">อุปกรณ์รุ่นที่ 4</span> · The Gen 4 Device
+        <span data-i18n="device.label">{t("device.label")}</span> · The Gen 4 Device
       </span>
     </div>
     <div class="rg-device-grid">
@@ -67,14 +53,12 @@ const fullSpecs = [
       </div>
       <div data-reveal data-reveal-delay="1">
         <h2 class="rg-h2 rg-h2-light">
-          <span data-i18n="device.h2">สถานีเฝ้าระวังครบในหนึ่งเดียว</span>
+          <span data-i18n="device.h2">{t("device.h2")}</span>
         </h2>
-        <p class="rg-cap" style="color:#C9A227;">One all-in-one field station</p>
+        <p class="rg-cap" style="color:#C9A227;" data-i18n="cap.device">{t("cap.device")}</p>
         <p class="rg-lead rg-lead-light">
-          <span data-i18n="device.lead"
-            >สูง 4 เมตร พลังงานแสงอาทิตย์ กันน้ำท่วม พร้อมคอมพิวเตอร์ประมวลผลที่ขอบและเครือข่าย
-            LoRa</span
-          > — engineered to survive Thailand's monsoons.
+          <span data-i18n="device.lead">{t("device.lead")}</span> — engineered to survive Thailand's
+          monsoons.
         </p>
         <div class="rg-spec-grid">
           {
@@ -83,7 +67,7 @@ const fullSpecs = [
                 <Icon name={s.icon} size={20} class="rg-spec-icon" />
                 <div class="rg-spec-value">{s.value}</div>
                 <div class="rg-spec-th">
-                  <span data-i18n={s.key}>{s.th}</span>
+                  <span data-i18n={s.key}>{t(s.key)}</span>
                 </div>
               </div>
             ))
@@ -96,8 +80,8 @@ const fullSpecs = [
               <div class="rg-device-feature">
                 <Icon name={f.icon} size={20} />
                 <div>
-                  <div class="rg-device-feature-title">{f.title}</div>
-                  <p class="rg-device-feature-desc">{f.desc}</p>
+                  <div class="rg-device-feature-title" data-i18n={f.titleKey}>{t(f.titleKey)}</div>
+                  <p class="rg-device-feature-desc" data-i18n={f.descKey}>{t(f.descKey)}</p>
                 </div>
               </div>
             ))
@@ -105,20 +89,20 @@ const fullSpecs = [
         </div>
 
         <button type="button" class="rg-more-btn is-onlight" data-modal-open="modal-device">
-          <Icon name="gauge" size={16} /> ดูสเปกทั้งหมด
+          <Icon name="gauge" size={16} /> <span data-i18n="device.more">{t("device.more")}</span>
         </button>
       </div>
     </div>
   </div>
 
-  <Modal id="modal-device" eyebrow="The Gen 4 Device" title="สเปกอุปกรณ์ RiceGuard Sentinel">
+  <Modal id="modal-device" eyebrowKey="device.label" titleKey="device.modal.title">
     <table class="rg-spec-table">
       <tbody>
         {
-          fullSpecs.map(([label, value]) => (
+          fullSpecs.map((row) => (
             <tr>
-              <td>{label}</td>
-              <td>{value}</td>
+              <td data-i18n={row.l}>{t(row.l)}</td>
+              {row.v ? <td data-i18n={row.v}>{t(row.v)}</td> : <td>{row.vRaw}</td>}
             </tr>
           ))
         }

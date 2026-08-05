@@ -1,23 +1,24 @@
 ---
 import Icon from "../Icon.astro";
+import { t } from "../../i18n/ui";
 
 const tiers = [
-  { level: "Field", key: "knowledge.tier0.th", th: "ระดับแปลง", en: "Plot-level insights — Songkhla, Chiang Rai, Amnat Charoen." },
-  { level: "Regional", key: "knowledge.tier1.th", th: "ระดับภูมิภาค", en: "North / Northeast / Central / South aggregation." },
-  { level: "National", key: "knowledge.tier2.th", th: "ระดับประเทศ", en: "Thailand-wide rice intelligence, fed back to every device." },
+  { level: "Field", key: "knowledge.tier0.th", en: "Plot-level insights — Songkhla, Chiang Rai, Amnat Charoen." },
+  { level: "Regional", key: "knowledge.tier1.th", en: "North / Northeast / Central / South aggregation." },
+  { level: "National", key: "knowledge.tier2.th", en: "Thailand-wide rice intelligence, fed back to every device." },
 ];
 
 const varieties = [
-  { name: "กข43", meta: "อายุสั้น 95 วัน · น้ำตาลต่ำ" },
-  { name: "ขาวดอกมะลิ 105", meta: "หอม · ทนแล้ง · นาปี" },
-  { name: "ปทุมธานี 1", meta: "ผลผลิตสูง · นาชลประทาน" },
-  { name: "กข6", meta: "ข้าวเหนียว · ภาคเหนือ/อีสาน" },
+  { nameKey: "knowledge.variety0.name", metaKey: "knowledge.variety0.meta" },
+  { nameKey: "knowledge.variety1.name", metaKey: "knowledge.variety1.meta" },
+  { nameKey: "knowledge.variety2.name", metaKey: "knowledge.variety2.meta" },
+  { nameKey: "knowledge.variety3.name", metaKey: "knowledge.variety3.meta" },
 ];
 
 const steps = [
-  { title: "เลือกพันธุ์ที่เหมาะกับพื้นที่", desc: "ระบบแนะนำจากชนิดดิน ภูมิอากาศ และฤดูปลูกของแปลง" },
-  { title: "ดาวน์โหลดโปรไฟล์ลงอุปกรณ์", desc: "ตารางปุ๋ย น้ำ และศัตรูพืชเฉพาะพันธุ์ ไหลลงสถานีในแปลง" },
-  { title: "อุปกรณ์ปรับคำแนะนำอัตโนมัติ", desc: "คำแนะนำเปลี่ยนตามระยะการเจริญเติบโตของข้าว" },
+  { titleKey: "knowledge.step0.title", descKey: "knowledge.step0.desc" },
+  { titleKey: "knowledge.step1.title", descKey: "knowledge.step1.desc" },
+  { titleKey: "knowledge.step2.title", descKey: "knowledge.step2.desc" },
 ];
 ---
 
@@ -28,30 +29,28 @@ const steps = [
       <span class="rg-secnum-n">06</span>
       <span class="rg-secnum-line" style="background:#F5EAD8;"></span>
       <span class="rg-secnum-label" style="color:rgba(245,234,216,0.9);">
-        <span data-i18n="knowledge.label">รางวัลสูงสุด</span> · The Ultimate Prize
+        <span data-i18n="knowledge.label">{t("knowledge.label")}</span> · The Ultimate Prize
       </span>
     </div>
     <h2 class="rg-h2 rg-h2-light rg-h2-wide">
-      <span data-i18n="knowledge.h2">ฐานความรู้ที่เปิดให้ชาวนาทุกคน ทุกที่</span>
+      <span data-i18n="knowledge.h2">{t("knowledge.h2")}</span>
     </h2>
-    <p class="rg-cap" style="color:#F5EAD8; font-size:24px;">
-      An open Knowledge Base — free, for every farmer, everywhere
+    <p class="rg-cap" style="color:#F5EAD8; font-size:24px;" data-i18n="cap.knowledge">
+      {t("cap.knowledge")}
     </p>
     <p class="rg-lead rg-lead-onlgreen" data-reveal>
-      <span data-i18n="knowledge.lead"
-        >ความรู้เรื่องพันธุ์ข้าวไทย ตารางปุ๋ย โรคและศัตรูพืช ที่เติบโตขึ้นทุกวัน
-        และไหลกลับสู่อุปกรณ์ในทุกภูมิภาค</span
-      > — knowledge that grows from Field → Regional → National and flows back to every device.
+      <span data-i18n="knowledge.lead">{t("knowledge.lead")}</span> — knowledge that grows from Field
+      → Regional → National and flows back to every device.
     </p>
     <div class="rg-kb-grid">
       {
-        tiers.map((t) => (
+        tiers.map((tier) => (
           <div class="rg-kb-card" data-reveal>
-            <div class="rg-kb-level">{t.level}</div>
+            <div class="rg-kb-level">{tier.level}</div>
             <h3 class="rg-h4 rg-h4-light">
-              <span data-i18n={t.key}>{t.th}</span>
+              <span data-i18n={tier.key}>{t(tier.key)}</span>
             </h3>
-            <p class="rg-kb-en">{t.en}</p>
+            <p class="rg-kb-en">{tier.en}</p>
           </div>
         ))
       }
@@ -62,18 +61,23 @@ const steps = [
       <div class="rg-variety-picker" data-reveal>
         <div class="rg-variety-search">
           <Icon name="search" size={18} />
-          <input type="text" placeholder="ค้นหาพันธุ์ข้าว เช่น หอมมะลิ, กข43…" aria-label="ค้นหาพันธุ์ข้าว" />
+          <input
+            type="text"
+            placeholder={t("knowledge.search")}
+            data-i18n-placeholder="knowledge.search"
+            aria-label={t("knowledge.search")}
+          />
         </div>
         <div class="rg-variety-list">
           {
             varieties.map((v) => (
               <div class="rg-variety-item">
                 <div>
-                  <div class="rg-variety-name">{v.name}</div>
-                  <div class="rg-variety-meta">{v.meta}</div>
+                  <div class="rg-variety-name" data-i18n={v.nameKey}>{t(v.nameKey)}</div>
+                  <div class="rg-variety-meta" data-i18n={v.metaKey}>{t(v.metaKey)}</div>
                 </div>
                 <button type="button" class="rg-variety-dl">
-                  <Icon name="download" size={14} /> ส่งลงอุปกรณ์
+                  <Icon name="download" size={14} /> <span data-i18n="knowledge.dl">{t("knowledge.dl")}</span>
                 </button>
               </div>
             ))
@@ -86,8 +90,8 @@ const steps = [
             steps.map((s) => (
               <li class="rg-step">
                 <div>
-                  <div class="rg-step-title">{s.title}</div>
-                  <p class="rg-step-desc">{s.desc}</p>
+                  <div class="rg-step-title" data-i18n={s.titleKey}>{t(s.titleKey)}</div>
+                  <p class="rg-step-desc" data-i18n={s.descKey}>{t(s.descKey)}</p>
                 </div>
               </li>
             ))

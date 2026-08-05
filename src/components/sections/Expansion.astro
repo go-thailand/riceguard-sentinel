@@ -3,7 +3,8 @@ import Icon from "../Icon.astro";
 import MapLegend from "../MapLegend.astro";
 import ProvinceModal from "../ProvinceModal.astro";
 import ProvinceData from "../ProvinceData.astro";
-import { provinces, statusLabel } from "../../data/provinces";
+import { provinces } from "../../data/provinces";
+import { t } from "../../i18n/ui";
 ---
 
 <section id="expansion" class="rg-section">
@@ -14,7 +15,7 @@ import { provinces, statusLabel } from "../../data/provinces";
          the two apart). -->
     <div class="rg-map-wrap" data-reveal>
       <button type="button" class="rg-map-expand" data-modal-open="modal-map" aria-label="ขยายดูแผนที่">
-        <Icon name="maximize-2" size={15} /> ขยายแผนที่
+        <Icon name="maximize-2" size={15} /> <span data-i18n="map.expand">{t("map.expand")}</span>
       </button>
       <svg id="rg-map-home" class="rg-map-svg" aria-label="แผนที่พื้นที่วิจัย 12 จังหวัด 4 ภูมิภาค"
       ></svg>
@@ -26,26 +27,30 @@ import { provinces, statusLabel } from "../../data/provinces";
         <span class="rg-secnum-n">09</span>
         <span class="rg-secnum-line" style="background:#8FB43A;"></span>
         <span class="rg-secnum-label">
-          <span data-i18n="expansion.label">การขยายผล 4 ภูมิภาค</span> · 4-Region Expansion
+          <span data-i18n="expansion.label">{t("expansion.label")}</span> · 4-Region Expansion
         </span>
       </div>
-      <h2 class="rg-h2"><span data-i18n="expansion.h2">ทดสอบทั่วประเทศ ในทุกสภาพนา</span></h2>
-      <p class="rg-cap" style="color:#A67C00;">Testing across every Thai growing condition</p>
+      <h2 class="rg-h2"><span data-i18n="expansion.h2">{t("expansion.h2")}</span></h2>
+      <p class="rg-cap" style="color:#A67C00;" data-i18n="cap.expansion">{t("cap.expansion")}</p>
       <p class="rg-lead" style="max-width:520px;">
-        <span data-i18n="expansion.lead"
-          >เหนือ · อีสาน · กลาง · ใต้ — เปรียบเทียบแปลงแบบดั้งเดิมกับแปลงที่ใช้ Sentinel
-          ทั้งฤดูฝนและฤดูแล้ง</span
-        > — คลิกจุดบนแผนที่เพื่อดูรายละเอียด หรือกด "ขยายแผนที่"
+        <span data-i18n="expansion.lead">{t("expansion.lead")}</span> —
+        <span data-i18n="map.hint">{t("map.hint")}</span>
       </p>
       <div class="rg-province-grid">
         {
           provinces.map((p) => (
             <div class="rg-province">
               <div>
-                <div class="rg-province-name">{p.name}</div>
-                <div class="rg-province-region">ภาค{p.region}</div>
+                <div class="rg-province-name">
+                  <span data-i18n={`province.${p.slug}.name`}>{t(`province.${p.slug}.name`)}</span>
+                </div>
+                <div class="rg-province-region">
+                  <span data-i18n={`region.${p.region}`}>{t(`region.${p.region}`)}</span>
+                </div>
               </div>
-              <span class={`rg-status rg-status-${p.status}`}>{statusLabel[p.status]}</span>
+              <span class={`rg-status rg-status-${p.status}`} data-i18n={`status.${p.status}`}>
+                {t(`status.${p.status}`)}
+              </span>
             </div>
           ))
         }
@@ -68,8 +73,8 @@ import { provinces, statusLabel } from "../../data/provinces";
     <div class="rg-modal-panel rg-modal-panel-map">
       <div class="rg-modal-head">
         <div>
-          <div class="rg-modal-eyebrow">4-Region Expansion</div>
-          <h3 class="rg-modal-title">แผนที่พื้นที่วิจัย 12 จังหวัด</h3>
+          <div class="rg-modal-eyebrow" data-i18n="map.modal.eyebrow">{t("map.modal.eyebrow")}</div>
+          <h3 class="rg-modal-title" data-i18n="map.modal.title">{t("map.modal.title")}</h3>
         </div>
         <div class="rg-modal-head-actions">
           <a class="rg-modal-fs" href="/research-map" aria-label="ขยายเต็มจอ" title="ขยายเต็มจอ">
@@ -105,7 +110,7 @@ import { provinces, statusLabel } from "../../data/provinces";
       // Small map — interactive (province click → Province Modal).
       RGMap.draw({
         svg: "#rg-map-home",
-        provinces: data,
+        data: data,
         width: 520,
         height: 700,
         interactive: true,
@@ -123,7 +128,7 @@ import { provinces, statusLabel } from "../../data/provinces";
       // Drawn now; SVG is viewBox-based so it renders fine while hidden.
       RGMap.draw({
         svg: "#rg-map-modal",
-        provinces: data,
+        data: data,
         width: 520,
         height: 700,
         interactive: false,

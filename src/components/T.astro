@@ -1,0 +1,25 @@
+---
+import { t } from "../i18n/ui";
+
+// Renders a translatable string from the i18n dictionary.
+// Outputs the Thai copy at build time (SEO + no flash) tagged with data-i18n,
+// so the runtime switcher (src/scripts/i18n.js) can swap it to EN/ZH.
+// Use `html` for entries that contain markup (e.g. hero.title with <br>).
+interface Props {
+  key: string;
+  html?: boolean;
+  class?: string;
+}
+const { key, html = false, class: className } = Astro.props;
+const value = t(key, "th");
+---
+
+{
+  html ? (
+    <span data-i18n={key} data-i18n-html="1" class={className} set:html={value} />
+  ) : (
+    <span data-i18n={key} class={className}>
+      {value}
+    </span>
+  )
+}

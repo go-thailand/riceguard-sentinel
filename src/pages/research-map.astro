@@ -4,6 +4,7 @@ import ProvinceModal from "../components/ProvinceModal.astro";
 import ProvinceData from "../components/ProvinceData.astro";
 import MapLegend from "../components/MapLegend.astro";
 import Icon from "../components/Icon.astro";
+import { t } from "../i18n/ui";
 ---
 
 <Layout
@@ -12,7 +13,7 @@ import Icon from "../components/Icon.astro";
 >
   <div class="rg-map-full">
     <a href="/#expansion" class="rg-map-full-back">
-      <Icon name="arrow-right" size={16} /> กลับสู่หน้าหลัก
+      <Icon name="arrow-right" size={16} /> <span data-i18n="map.back">{t("map.back")}</span>
     </a>
     <svg id="rg-map-full" class="rg-map-svg" aria-label="แผนที่พื้นที่วิจัย 12 จังหวัด 4 ภูมิภาค เต็มจอ"
     ></svg>
@@ -35,7 +36,7 @@ import Icon from "../components/Icon.astro";
       function render() {
         RGMap.draw({
           svg: "#rg-map-full",
-          provinces: data,
+          data: data,
           width: window.innerWidth,
           height: window.innerHeight,
           pad: Math.max(48, Math.round(window.innerWidth * 0.06)),

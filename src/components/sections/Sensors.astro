@@ -1,19 +1,26 @@
 ---
 import SectionHeader from "../SectionHeader.astro";
 import Icon from "../Icon.astro";
+import { t } from "../../i18n/ui";
 
 // Representative live readouts (sample values from the Ranot trial plot)
 const readouts = [
-  { label: "pH ดิน", value: "5.8", unit: "", pct: 58 },
-  { label: "EC", value: "1.2", unit: "dS/m", pct: 40 },
-  { label: "ความชื้นดิน", value: "68", unit: "%", pct: 68 },
-  { label: "NPK", value: "สมดุล", unit: "", pct: 72 },
-  { label: "ระดับน้ำ", value: "4", unit: "cm", pct: 30 },
-  { label: "อุณหภูมิ", value: "31", unit: "°C", pct: 62 },
+  { labelKey: "sensors.readout.ph", value: "5.8", unit: "", pct: 58 },
+  { labelKey: "sensors.readout.ec", value: "1.2", unit: "dS/m", pct: 40 },
+  { labelKey: "sensors.readout.moisture", value: "68", unit: "%", pct: 68 },
+  { labelKey: "sensors.readout.npk", valueKey: "sensors.readout.npk.value", unit: "", pct: 72 },
+  { labelKey: "sensors.readout.water", value: "4", unit: "cm", pct: 30 },
+  { labelKey: "sensors.readout.temp", value: "31", unit: "°C", pct: 62 },
 ];
 
-const stages = ["ระยะกล้า", "แตกกอ", "ตั้งท้อง", "ออกรวง", "สุกแก่"];
-const activeStage = "ตั้งท้อง";
+const stages = [
+  "sensors.stage.seedling",
+  "sensors.stage.tillering",
+  "sensors.stage.booting",
+  "sensors.stage.heading",
+  "sensors.stage.ripening",
+];
+const activeStage = "sensors.stage.booting";
 ---
 
 <section id="sensors" class="rg-section">
@@ -21,16 +28,13 @@ const activeStage = "ตั้งท้อง";
     <SectionHeader
       num="04"
       labelKey="sensors.label"
-      labelTh="เซ็นเซอร์และการหลอมรวมข้อมูล"
       labelEn="Sensing &amp; Data Fusion"
       h2Key="sensors.h2"
-      h2Th="ตัวเลขจากดิน · ภาพจากต้นข้าว"
-      cap="Numbers from the soil, images from the crop"
+      capKey="cap.sensors"
     />
     <p class="rg-lead" data-reveal>
-      <span data-i18n="sensors.lead"
-        >18 การวัด หลอมรวมกับภาพการเจริญเติบโตและศัตรูพืช เพื่อให้คำแนะนำที่แม่นยำ</span
-      > — two streams of evidence, fused into one recommendation.
+      <span data-i18n="sensors.lead">{t("sensors.lead")}</span> — two streams of evidence, fused into
+      one recommendation.
     </p>
     <div class="rg-fusion-grid">
       <!-- Soil / weather sensor readouts -->
@@ -38,16 +42,17 @@ const activeStage = "ตั้งท้อง";
         <div class="rg-fusion-card-head" style="color:#5A7326;">
           <Icon name="activity" size={20} />
           <span class="rg-fusion-card-title">
-            <span data-i18n="sensors.data.title">ข้อมูลเซ็นเซอร์</span> · Sensor data
+            <span data-i18n="sensors.data.title">{t("sensors.data.title")}</span> · Sensor data
           </span>
         </div>
         <div class="rg-readouts">
           {
             readouts.map((r) => (
               <div class="rg-readout">
-                <div class="rg-readout-label">{r.label}</div>
+                <div class="rg-readout-label" data-i18n={r.labelKey}>{t(r.labelKey)}</div>
                 <div class="rg-readout-value">
-                  {r.value} {r.unit && <small>{r.unit}</small>}
+                  {r.valueKey ? <span data-i18n={r.valueKey}>{t(r.valueKey)}</span> : r.value}{" "}
+                  {r.unit && <small>{r.unit}</small>}
                 </div>
                 <div class="rg-readout-bar">
                   <span style={`width:${r.pct}%`} />
@@ -64,7 +69,7 @@ const activeStage = "ตั้งท้อง";
           <Icon name="git-merge" size={28} class="rg-fusion-svg" />
         </div>
         <span class="rg-fusion-node-label">
-          <span data-i18n="sensors.fusion">หลอมรวม</span><br />Fusion (AI)
+          <span data-i18n="sensors.fusion">{t("sensors.fusion")}</span><br />Fusion (AI)
         </span>
       </div>
 
@@ -73,7 +78,7 @@ const activeStage = "ตั้งท้อง";
         <div class="rg-fusion-card-head" style="color:#A67C00;">
           <Icon name="camera" size={20} />
           <span class="rg-fusion-card-title">
-            <span data-i18n="sensors.image.title">ภาพต้นข้าวและศัตรูพืช</span> · Crop &amp; pest
+            <span data-i18n="sensors.image.title">{t("sensors.image.title")}</span> · Crop &amp; pest
             images
           </span>
         </div>
@@ -86,13 +91,15 @@ const activeStage = "ตั้งท้อง";
             height="212"
           />
           <div class="rg-bbox-frame" style="top:34%;left:40%;width:30%;height:34%;">
-            <span class="rg-bbox-tag">หนอนกอ · 92%</span>
+            <span class="rg-bbox-tag" data-i18n="sensors.bbox">{t("sensors.bbox")}</span>
           </div>
         </div>
         <div class="rg-growth-stages">
           {
             stages.map((s) => (
-              <span class={`rg-growth-chip${s === activeStage ? " is-active" : ""}`}>{s}</span>
+              <span class={`rg-growth-chip${s === activeStage ? " is-active" : ""}`} data-i18n={s}>
+                {t(s)}
+              </span>
             ))
           }
         </div>

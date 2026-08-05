@@ -1,8 +1,7 @@
 // RiceGuard Sentinel — language switcher
-// Text for elements with [data-i18n="key"] lives in lang-data.js (RG_I18N).
-// EN/ZH are Thai placeholders until Best delivers real translations (RIC-444) —
-// at that point just edit the values in lang-data.js, no markup changes needed.
-import { RG_I18N as dict } from "./lang-data.js";
+// Text for elements with [data-i18n="key"] lives in the shared dictionary
+// src/i18n/ui.ts (same source <T> renders from). To edit copy, edit ui.ts only.
+import { ui as dict } from "../i18n/ui";
 
 const LANG_KEY = "rg-lang";
 
@@ -18,6 +17,11 @@ function applyLang(lang) {
       el.textContent = value;
     }
   });
+  // Placeholder attributes (e.g. search inputs)
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    const entry = dict[el.getAttribute("data-i18n-placeholder")];
+    if (entry) el.setAttribute("placeholder", entry[lang] || entry.th);
+  });
   document.querySelectorAll(".rg-lang-btn").forEach((btn) => {
     btn.classList.toggle("is-active", btn.getAttribute("data-lang") === lang);
   });
@@ -26,6 +30,8 @@ function applyLang(lang) {
   } catch (e) {
     /* ignore (private mode) */
   }
+  // Notify non-DOM consumers (e.g. the D3 map labels) that copy changed.
+  document.dispatchEvent(new CustomEvent("rg:langchange", { detail: { lang } }));
 }
 
 document.querySelectorAll(".rg-lang-btn").forEach((btn) => {

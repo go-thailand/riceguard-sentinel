@@ -1,16 +1,17 @@
 ---
 import SectionHeader from "../SectionHeader.astro";
+import { t } from "../../i18n/ui";
 
 const stats = [
-  { value: "pH 4.7", key: "trial.stat0.th", th: "จุดที่กรดจัดที่สุด" },
-  { value: "57%", key: "trial.stat1.th", th: "ประหยัดปูนโดโลไมต์" },
-  { value: "36 ไร่", key: "trial.stat2.th", th: "พื้นที่ทดลอง" },
+  { value: "pH 4.7", key: "trial.stat0.th" },
+  { value: "57%", key: "trial.stat1.th" },
+  { value: "36 ไร่", key: "trial.stat2.th" },
 ];
 
 const compare = [
-  { metric: "ปูนโดโลไมต์ที่ใช้", control: "100%", sentinel: "43%" },
-  { metric: "วิธีการใส่ปูน", control: "ทั้งแปลงเท่ากัน", sentinel: "เฉพาะจุดที่กรดจัด" },
-  { metric: "ความสม่ำเสมอ pH", control: "ต่ำ", sentinel: "สูง" },
+  { metricKey: "trial.cmp0.metric", control: "100%", sentinel: "43%" },
+  { metricKey: "trial.cmp1.metric", controlKey: "trial.cmp1.control", sentinelKey: "trial.cmp1.sentinel" },
+  { metricKey: "trial.cmp2.metric", controlKey: "trial.cmp2.control", sentinelKey: "trial.cmp2.sentinel" },
 ];
 
 // pH readings across 8 zones of the trial plot. Height maps pH 4→7 onto 0→100%.
@@ -23,11 +24,9 @@ const barHeight = (ph: number) => Math.round(((ph - 4) / 3) * 100);
     <SectionHeader
       num="08"
       labelKey="trial.label"
-      labelTh="ผลการทดลองภาคสนาม"
       labelEn="Field Trial Results"
       h2Key="trial.h2"
-      h2Th="ระโนด สงขลา — บทเรียนจริง"
-      cap="Ranot, Songkhla — what the soil revealed"
+      capKey="cap.trial"
     />
     <div class="rg-trial-grid">
       <div class="washed rg-trial-imgwrap" data-reveal>
@@ -41,10 +40,7 @@ const barHeight = (ph: number) => Math.round(((ph - 4) / 3) * 100);
       </div>
       <div class="rg-trial-side" data-reveal data-reveal-delay="1">
         <p class="rg-lead" style="margin:0;">
-          <span data-i18n="trial.lead"
-            >เซ็นเซอร์พบดินกรดจัดถึง pH 4.7 ซึ่งมองไม่เห็นด้วยตาเปล่า
-            การใส่ปูนแบบเฉพาะจุดประหยัดได้ 57%</span
-          >
+          <span data-i18n="trial.lead">{t("trial.lead")}</span>
         </p>
         <div class="rg-trial-stats">
           {
@@ -52,7 +48,7 @@ const barHeight = (ph: number) => Math.round(((ph - 4) / 3) * 100);
               <div class="rg-trial-stat">
                 <div class="rg-trial-value">{s.value}</div>
                 <div class="rg-trial-th">
-                  <span data-i18n={s.key}>{s.th}</span>
+                  <span data-i18n={s.key}>{t(s.key)}</span>
                 </div>
               </div>
             ))
@@ -64,22 +60,24 @@ const barHeight = (ph: number) => Math.round(((ph - 4) / 3) * 100);
     <!-- Control vs Sentinel comparison + pH distribution chart -->
     <div class="rg-trial-detail" data-reveal>
       <div class="rg-trial-detail-col">
-        <h3 class="rg-h4">เปรียบเทียบแปลงควบคุมกับแปลง Sentinel</h3>
+        <h3 class="rg-h4" data-i18n="trial.compare.title">{t("trial.compare.title")}</h3>
         <table class="rg-compare-table">
           <thead>
             <tr>
-              <th>ตัวชี้วัด</th>
-              <th>แปลงควบคุม</th>
-              <th class="rg-col-sentinel">แปลง Sentinel</th>
+              <th data-i18n="trial.compare.metric">{t("trial.compare.metric")}</th>
+              <th data-i18n="trial.compare.control">{t("trial.compare.control")}</th>
+              <th class="rg-col-sentinel" data-i18n="trial.compare.sentinel">{t("trial.compare.sentinel")}</th>
             </tr>
           </thead>
           <tbody>
             {
               compare.map((r) => (
                 <tr>
-                  <td>{r.metric}</td>
-                  <td>{r.control}</td>
-                  <td class="rg-col-sentinel">{r.sentinel}</td>
+                  <td data-i18n={r.metricKey}>{t(r.metricKey)}</td>
+                  <td>{r.controlKey ? <span data-i18n={r.controlKey}>{t(r.controlKey)}</span> : r.control}</td>
+                  <td class="rg-col-sentinel">
+                    {r.sentinelKey ? <span data-i18n={r.sentinelKey}>{t(r.sentinelKey)}</span> : r.sentinel}
+                  </td>
                 </tr>
               ))
             }
@@ -87,7 +85,7 @@ const barHeight = (ph: number) => Math.round(((ph - 4) / 3) * 100);
         </table>
       </div>
       <div class="rg-trial-detail-col">
-        <h3 class="rg-h4">การกระจายค่า pH ใน 8 โซน</h3>
+        <h3 class="rg-h4" data-i18n="trial.ph.title">{t("trial.ph.title")}</h3>
         <div class="rg-phchart">
           <div class="rg-phchart-bars">
             {
@@ -103,10 +101,7 @@ const barHeight = (ph: number) => Math.round(((ph - 4) / 3) * 100);
               ))
             }
           </div>
-          <p class="rg-phchart-note">
-            แถบสีส้มคือโซนที่กรดจัด (pH &lt; 5.5) ซึ่งได้รับปูนแบบเฉพาะจุด · หมายเหตุ: uptime
-            ภาคสนามช่วง Gen 3 อยู่ที่ 9.1% ตามจริง
-          </p>
+          <p class="rg-phchart-note" data-i18n="trial.ph.note">{t("trial.ph.note")}</p>
         </div>
       </div>
     </div>
