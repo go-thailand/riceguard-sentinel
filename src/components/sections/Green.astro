@@ -1,0 +1,59 @@
+---
+const stats = [
+  { value: "0", key: "green.stat0.th", th: "รอยเท้าคาร์บอนจากอุปกรณ์" },
+  { value: "100%", key: "green.stat1.th", th: "พลังงานแสงอาทิตย์" },
+  { value: "15–25%", key: "green.stat2.th", th: "ลดการใช้สารเคมี" },
+  { value: "15–25%", key: "green.stat3.th", th: "ประหยัดปุ๋ย" },
+];
+---
+
+<section id="green" class="rg-section">
+  <div class="rg-container rg-green-grid">
+    <div data-reveal>
+      <div class="rg-secnum" style="color:#8FB43A;">
+        <span class="rg-secnum-n">07</span>
+        <span class="rg-secnum-line" style="background:#8FB43A;"></span>
+        <span class="rg-secnum-label">
+          <span data-i18n="green.label">เทคโนโลยีสีเขียว</span> · Green Technology
+        </span>
+      </div>
+      <h2 class="rg-h2"><span data-i18n="green.h2">ไม่ทิ้งรอยเท้าคาร์บอน</span></h2>
+      <p class="rg-cap" style="color:#A67C00;">Leaving no carbon footprint behind</p>
+      <p class="rg-lead">
+        <span data-i18n="green.lead"
+          >พลังงานแสงอาทิตย์ล้วน และช่วยลดการปล่อยก๊าซมีเทนจากการจัดการน้ำที่แม่นยำ</span
+        > — solar-powered, and it helps cut methane through smarter water management.
+      </p>
+      <div class="rg-green-stats">
+        {
+          stats.map((s) => (
+            <div class="rg-green-stat">
+              <div class="rg-green-value">{s.value}</div>
+              <div class="rg-green-th">
+                <span data-i18n={s.key}>{s.th}</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+    <figure class="rg-green-figure" data-reveal data-reveal-delay="1">
+      <div class="washed rg-green-imgwrap">
+        <img
+          src="/assets/img/green-terraces.webp"
+          alt="นาข้าวขั้นบันไดสีเขียว ป่าบงเปียง เชียงใหม่"
+          loading="lazy"
+          width="1100"
+          height="733"
+        />
+      </div>
+      <figcaption class="rg-figcaption">
+        ภาพ: Pa Bong Piang, Chiang Mai — <a
+          href="https://commons.wikimedia.org/wiki/File:Pa_bong_pieng_terrest_paddy_field.jpg"
+          target="_blank"
+          rel="noopener">Wikimedia Commons</a
+        >, CC BY 4.0
+      </figcaption>
+    </figure>
+  </div>
+</section>

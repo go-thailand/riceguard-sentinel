@@ -1,0 +1,42 @@
+---
+import "../styles/style.css";
+import "../styles/layout.css";
+import "../styles/components.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "RiceGuard Sentinel · ไรซ์การ์ด เซ็นทินัล — เกษตรอัจฉริยะเพื่อชาวนาไทยด้วย AI",
+  description = "RiceGuard Sentinel: งานวิจัยและพัฒนา IoT + AI เพื่อช่วยชาวนาไทยใช้น้ำ ปุ๋ย และดูแลศัตรูพืชอย่างแม่นยำ โดย Mobile AI Company",
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Figtree:wght@400;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=Noto+Serif+Thai:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="rg-page">
+      <slot />
+    </div>
+
+    <script>
+      import "../scripts/i18n.js";
+      import "../scripts/ui.js";
+    </script>
+  </body>
+</html>

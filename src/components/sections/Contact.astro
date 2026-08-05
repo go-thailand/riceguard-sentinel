@@ -1,0 +1,61 @@
+---
+import Icon from "../Icon.astro";
+---
+
+<section id="contact" class="rg-section rg-bg-dark">
+  <div class="rg-container">
+    <div class="rg-secnum" style="color:#C9A227;">
+      <span class="rg-secnum-n">11</span>
+      <span class="rg-secnum-line" style="background:#C9A227;"></span>
+      <span class="rg-secnum-label" style="color:#C9A227;">
+        <span data-i18n="contact.label">เกี่ยวกับเรา</span> · About &amp; Contact
+      </span>
+    </div>
+    <div class="rg-contact-grid">
+      <div data-reveal>
+        <h2 class="rg-h2 rg-h2-light">
+          <span data-i18n="contact.h2">บริษัท โมบาย เอไอ จำกัด</span>
+        </h2>
+        <p class="rg-cap" style="color:#C9A227;">Mobile AI Company Co., Ltd.</p>
+        <p class="rg-contact-desc">
+          <span data-i18n="contact.desc"
+            >ผู้พัฒนา RiceGuard Sentinel — งานวิจัยและพัฒนาที่ยังดำเนินอยู่ เพื่อการเกษตรไทย</span
+          >
+        </p>
+      </div>
+      <div class="rg-contact-info" data-reveal data-reveal-delay="1">
+        <div class="rg-contact-row">
+          <Icon name="map-pin" size={18} class="rg-contact-svg" />
+          <span>
+            <span data-i18n="contact.address"
+              >348 สุขุมวิท 101/1 แขวงบางนาเหนือ เขตบางนา กรุงเทพฯ 10260</span
+            ><br />
+            <span class="rg-contact-sub"
+              >348 Sukhumvit 101/1, Bangna Nuea, Bangna, Bangkok 10260</span
+            >
+          </span>
+        </div>
+        <div class="rg-contact-row">
+          <Icon name="phone" size={18} class="rg-contact-svg" />
+          <span>+66-6259-08888</span>
+        </div>
+        <div class="rg-contact-row">
+          <Icon name="file-text" size={18} class="rg-contact-svg" />
+          <span><span data-i18n="contact.tax">เลขภาษี</span> · Tax ID 0105567015509 · สาขา 00000</span>
+        </div>
+        <div class="rg-contact-row">
+          <Icon name="globe" size={18} class="rg-contact-svg" />
+          <span>13°41'03"N 100°37'19"E</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .rg-contact-row :global(.rg-contact-svg) {
+    color: #c9a227;
+    flex: 0 0 auto;
+    margin-top: 2px;
+  }
+</style>

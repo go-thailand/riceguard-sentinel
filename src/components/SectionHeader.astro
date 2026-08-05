@@ -1,0 +1,42 @@
+---
+// Shared section header: the numbered eyebrow (rg-secnum) + H2 + English caption.
+// Reused by all 11 content sections.
+interface Props {
+  num: string;
+  color?: string;
+  labelKey: string;
+  labelTh: string;
+  labelEn: string;
+  labelColor?: string;
+  h2Key: string;
+  h2Th: string;
+  h2Class?: string;
+  cap: string;
+  capColor?: string;
+  capStyle?: string;
+}
+const {
+  num,
+  color = "#8FB43A",
+  labelKey,
+  labelTh,
+  labelEn,
+  labelColor,
+  h2Key,
+  h2Th,
+  h2Class = "rg-h2",
+  cap,
+  capColor = "#A67C00",
+  capStyle = "",
+} = Astro.props;
+---
+
+<div class="rg-secnum" style={`color:${color};`}>
+  <span class="rg-secnum-n">{num}</span>
+  <span class="rg-secnum-line" style={`background:${color};`}></span>
+  <span class="rg-secnum-label" style={labelColor ? `color:${labelColor};` : undefined}>
+    <span data-i18n={labelKey}>{labelTh}</span> · {labelEn}
+  </span>
+</div>
+<h2 class={h2Class}><span data-i18n={h2Key}>{h2Th}</span></h2>
+<p class="rg-cap" style={`color:${capColor};${capStyle}`}>{cap}</p>

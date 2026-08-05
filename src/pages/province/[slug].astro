@@ -1,0 +1,91 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import MobileMenu from "../../components/MobileMenu.astro";
+import Footer from "../../components/Footer.astro";
+import Icon from "../../components/Icon.astro";
+import { provinces, statusLabel, statusDesc } from "../../data/provinces";
+
+export function getStaticPaths() {
+  return provinces.map((province) => ({
+    params: { slug: province.slug },
+    props: { province },
+  }));
+}
+
+const { province } = Astro.props;
+
+// Representative field readings for the detail page (demo values).
+const fieldStats = [
+  { label: "พื้นที่ทดลอง", value: "36 ไร่" },
+  { label: "pH ดินเฉลี่ย", value: "5.6" },
+  { label: "ความชื้นดิน", value: "68%" },
+  { label: "สถานี Sentinel", value: province.status === "live" ? "ออนไลน์" : "—" },
+];
+---
+
+<Layout title={`${province.name} · หน้าแปลง — RiceGuard Sentinel`} description={province.note}>
+  <Navbar />
+  <MobileMenu />
+
+  <main class="rg-section rg-province-page">
+    <div class="rg-container">
+      <a href="/#expansion" class="rg-back-link">
+        <Icon name="arrow-right" size={16} class="rg-back-icon" /> กลับไปแผนที่พื้นที่วิจัย
+      </a>
+
+      <div class="rg-secnum" style="color:#8FB43A; margin-top:18px;">
+        <span class="rg-secnum-n">หน้าแปลง</span>
+        <span class="rg-secnum-line" style="background:#8FB43A;"></span>
+        <span class="rg-secnum-label">ภาค{province.region} · Field Dashboard</span>
+      </div>
+
+      <div class="rg-province-hero">
+        <div>
+          <h1 class="rg-h2">{province.name}</h1>
+          <p class="rg-cap" style="color:#A67C00;">{province.nameEn}</p>
+          <p class="rg-lead">{province.note}</p>
+          <span class={`rg-status rg-status-${province.status}`}>
+            {statusLabel[province.status]}
+          </span>
+          <p class="rg-province-statusdesc">{statusDesc[province.status]}</p>
+        </div>
+      </div>
+
+      <div class="rg-province-stats">
+        {
+          fieldStats.map((s) => (
+            <div class="rg-trial-stat">
+              <div class="rg-trial-value">{s.value}</div>
+              <div class="rg-trial-th">{s.label}</div>
+            </div>
+          ))
+        }
+      </div>
+
+      <p class="rg-lead" style="margin-top:28px;">
+        พิกัดสถานี: {province.lat.toFixed(2)}°N, {province.lng.toFixed(2)}°E — ข้อมูลรายแปลงแบบเรียลไทม์
+        (เซ็นเซอร์ดิน ภาพศัตรูพืช และคำแนะนำ) อยู่ระหว่างการเชื่อมต่อสำหรับพื้นที่นี้
+      </p>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .rg-province-page { padding-top: 40px; }
+  .rg-back-link {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-weight: 600; font-size: 13px; color: var(--rg-green);
+  }
+  .rg-back-link :global(.rg-back-icon) { transform: rotate(180deg); }
+  .rg-province-hero { margin-top: 12px; }
+  .rg-province-statusdesc { margin-top: 10px; font-size: 13px; color: #6f6b64; max-width: 560px; }
+  .rg-province-stats {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 26px;
+  }
+  @media (min-width: 700px) {
+    .rg-province-stats { grid-template-columns: repeat(4, 1fr); }
+  }
+</style>

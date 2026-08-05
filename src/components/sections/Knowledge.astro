@@ -1,0 +1,99 @@
+---
+import Icon from "../Icon.astro";
+
+const tiers = [
+  { level: "Field", key: "knowledge.tier0.th", th: "ระดับแปลง", en: "Plot-level insights — Songkhla, Chiang Rai, Amnat Charoen." },
+  { level: "Regional", key: "knowledge.tier1.th", th: "ระดับภูมิภาค", en: "North / Northeast / Central / South aggregation." },
+  { level: "National", key: "knowledge.tier2.th", th: "ระดับประเทศ", en: "Thailand-wide rice intelligence, fed back to every device." },
+];
+
+const varieties = [
+  { name: "กข43", meta: "อายุสั้น 95 วัน · น้ำตาลต่ำ" },
+  { name: "ขาวดอกมะลิ 105", meta: "หอม · ทนแล้ง · นาปี" },
+  { name: "ปทุมธานี 1", meta: "ผลผลิตสูง · นาชลประทาน" },
+  { name: "กข6", meta: "ข้าวเหนียว · ภาคเหนือ/อีสาน" },
+];
+
+const steps = [
+  { title: "เลือกพันธุ์ที่เหมาะกับพื้นที่", desc: "ระบบแนะนำจากชนิดดิน ภูมิอากาศ และฤดูปลูกของแปลง" },
+  { title: "ดาวน์โหลดโปรไฟล์ลงอุปกรณ์", desc: "ตารางปุ๋ย น้ำ และศัตรูพืชเฉพาะพันธุ์ ไหลลงสถานีในแปลง" },
+  { title: "อุปกรณ์ปรับคำแนะนำอัตโนมัติ", desc: "คำแนะนำเปลี่ยนตามระยะการเจริญเติบโตของข้าว" },
+];
+---
+
+<section id="knowledge" class="rg-section rg-bg-green">
+  <div class="rg-blob-decor" aria-hidden="true"></div>
+  <div class="rg-container rg-container-rel">
+    <div class="rg-secnum" style="color:#F5EAD8;">
+      <span class="rg-secnum-n">06</span>
+      <span class="rg-secnum-line" style="background:#F5EAD8;"></span>
+      <span class="rg-secnum-label" style="color:rgba(245,234,216,0.9);">
+        <span data-i18n="knowledge.label">รางวัลสูงสุด</span> · The Ultimate Prize
+      </span>
+    </div>
+    <h2 class="rg-h2 rg-h2-light rg-h2-wide">
+      <span data-i18n="knowledge.h2">ฐานความรู้ที่เปิดให้ชาวนาทุกคน ทุกที่</span>
+    </h2>
+    <p class="rg-cap" style="color:#F5EAD8; font-size:24px;">
+      An open Knowledge Base — free, for every farmer, everywhere
+    </p>
+    <p class="rg-lead rg-lead-onlgreen" data-reveal>
+      <span data-i18n="knowledge.lead"
+        >ความรู้เรื่องพันธุ์ข้าวไทย ตารางปุ๋ย โรคและศัตรูพืช ที่เติบโตขึ้นทุกวัน
+        และไหลกลับสู่อุปกรณ์ในทุกภูมิภาค</span
+      > — knowledge that grows from Field → Regional → National and flows back to every device.
+    </p>
+    <div class="rg-kb-grid">
+      {
+        tiers.map((t) => (
+          <div class="rg-kb-card" data-reveal>
+            <div class="rg-kb-level">{t.level}</div>
+            <h3 class="rg-h4 rg-h4-light">
+              <span data-i18n={t.key}>{t.th}</span>
+            </h3>
+            <p class="rg-kb-en">{t.en}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Rice-variety picker + download-to-device steps -->
+    <div class="rg-variety">
+      <div class="rg-variety-picker" data-reveal>
+        <div class="rg-variety-search">
+          <Icon name="search" size={18} />
+          <input type="text" placeholder="ค้นหาพันธุ์ข้าว เช่น หอมมะลิ, กข43…" aria-label="ค้นหาพันธุ์ข้าว" />
+        </div>
+        <div class="rg-variety-list">
+          {
+            varieties.map((v) => (
+              <div class="rg-variety-item">
+                <div>
+                  <div class="rg-variety-name">{v.name}</div>
+                  <div class="rg-variety-meta">{v.meta}</div>
+                </div>
+                <button type="button" class="rg-variety-dl">
+                  <Icon name="download" size={14} /> ส่งลงอุปกรณ์
+                </button>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+      <div data-reveal data-reveal-delay="1">
+        <ol class="rg-steps">
+          {
+            steps.map((s) => (
+              <li class="rg-step">
+                <div>
+                  <div class="rg-step-title">{s.title}</div>
+                  <p class="rg-step-desc">{s.desc}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>

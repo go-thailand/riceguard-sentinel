@@ -1,0 +1,71 @@
+---
+import SectionHeader from "../SectionHeader.astro";
+import Icon from "../Icon.astro";
+
+const steps = [
+  {
+    step: "01 · Field",
+    icon: "radio",
+    key: "how.step0.th",
+    th: "เก็บข้อมูลที่ขอบ",
+    blurb: "Sensors + images, timestamped and pre-filtered right on the device.",
+  },
+  {
+    step: "02 · Edge",
+    icon: "cpu",
+    key: "how.step1.th",
+    th: "ประมวลผลที่เครื่อง",
+    blurb: "Urgent decisions — pest and flood alerts — happen instantly, no cloud needed.",
+  },
+  {
+    step: "03 · Cloud",
+    icon: "cloud",
+    key: "how.step2.th",
+    th: "วิเคราะห์บนคลาวด์",
+    blurb: "Deep analysis fuses sensor and image data and retrains the models.",
+  },
+  {
+    step: "04 · Farmer",
+    icon: "smartphone",
+    key: "how.step3.th",
+    th: "ถึงมือชาวนา",
+    blurb: "Human-readable insights and alerts via app, SMS, and dashboard.",
+  },
+];
+---
+
+<section id="how" class="rg-section">
+  <div class="rg-container">
+    <SectionHeader
+      num="02"
+      labelKey="how.label"
+      labelTh="เส้นทางข้อมูล 4 ชั้น"
+      labelEn="The 4-Layer Data Pipeline"
+      h2Key="how.h2"
+      h2Th="จากต้นข้าว ถึงมือชาวนา ใน 4 ขั้น"
+      cap="From the field to the farmer's hand, in four steps"
+    />
+    <div class="rg-pipeline-grid">
+      {
+        steps.map((s, i) => (
+          <div class="card rg-pipeline-card" data-reveal data-reveal-delay={String(i)}>
+            <span class="rg-pipeline-step">{s.step}</span>
+            <div class="rg-pipeline-icon">
+              <Icon name={s.icon} size={22} class="rg-pipeline-svg" />
+            </div>
+            <h3 class="rg-h4">
+              <span data-i18n={s.key}>{s.th}</span>
+            </h3>
+            <p class="rg-pipeline-blurb">{s.blurb}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .rg-pipeline-icon :global(.rg-pipeline-svg) {
+    color: #5a7326;
+  }
+</style>

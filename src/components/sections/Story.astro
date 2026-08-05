@@ -1,0 +1,158 @@
+---
+import SectionHeader from "../SectionHeader.astro";
+import Icon from "../Icon.astro";
+import Modal from "../Modal.astro";
+
+// Gen 3 → Gen 4: evidence-driven redesign rows
+const beforeAfter = [
+  { was: "อุปกรณ์ไฟฟ้าจมน้ำ", now: "ยกกล่องควบคุม IP68 สูง 1.2 ม." },
+  { was: "แบตเตอรี่หมดไฟช่วงฝนต่อเนื่อง", now: "โซลาร์สองหน้า + สำรอง 5–11 วัน" },
+  { was: "Uptime เพียง 9.1%", now: "สถาปัตยกรรมพลังงานสำรองใหม่" },
+];
+
+const timeline = [
+  {
+    when: "2569 · Q1",
+    title: "ติดตั้ง Gen 3 ที่ระโนด สงขลา",
+    desc: "สถานีต้นแบบ 36 ไร่ เก็บข้อมูลจริงฤดูฝนแรก",
+    problem: false,
+  },
+  {
+    when: "ปัญหาที่พบ",
+    title: "น้ำท่วมขัง · ไฟฟ้าจมน้ำ · แบตหมด",
+    desc: "Uptime ตกเหลือ 9.1% — ข้อมูลหลายช่วงขาดหาย",
+    problem: true,
+  },
+  {
+    when: "ทางแก้",
+    title: "ออกแบบเสาปริซึมหกเหลี่ยม + ยกฐานราก",
+    desc: "แยกงานไฟฟ้าขึ้นสูง กันน้ำระดับ IP68 ทั้งระบบ",
+    problem: false,
+  },
+  {
+    when: "2569 · Q4",
+    title: "Gen 4 ผ่านการตรวจรับโดยวิศวกร (PE-signed)",
+    desc: "โครงสร้างและระบบไฟฟ้ารับรองโดยวิศวกรวิชาชีพ",
+    problem: false,
+  },
+];
+---
+
+<section id="story" class="rg-section rg-bg-white">
+  <div class="rg-container">
+    <SectionHeader
+      num="01"
+      labelKey="story.label"
+      labelTh="เรื่องราวจากภาคสนาม"
+      labelEn="The R&D Story"
+      h2Key="story.h2"
+      h2Th="จากแปลงนาจริง สู่การออกแบบใหม่"
+      cap="From a real field to a redesign — Gen 3 → Gen 4"
+    />
+    <p class="rg-lead" data-reveal>
+      <span data-i18n="story.lead"
+        >นี่ไม่ใช่ผลิตภัณฑ์จากห้องแล็บ ทุกการเปลี่ยนแปลงของรุ่นที่ 4
+        มาจากปัญหาที่พบจริงในนาข้าวสงขลา</span
+      > — every Gen 4 decision traces to something the field taught us.
+    </p>
+
+    <div class="rg-story-grid">
+      <!-- Gen 3 — the real problems the data revealed -->
+      <div class="rg-story-card rg-story-card-light" data-reveal>
+        <span class="tag tag-neutral">Gen 3 · สงขลา 2569</span>
+        <h3 class="rg-h3"><span data-i18n="story.gen3.h3">สิ่งที่ข้อมูลบอกเรา</span></h3>
+        <div class="rg-problem-panel">
+          <div class="rg-problem-stat">
+            <span class="rg-problem-stat-value">9.1%</span>
+            <span class="rg-problem-stat-label">Uptime เฉลี่ยของ Gen 3<br />ตลอดฤดูฝนแรก</span>
+          </div>
+          <ul class="rg-problem-list">
+            <li><Icon name="droplets" size={16} /> อุปกรณ์ไฟฟ้าจมน้ำเมื่อระดับน้ำในแปลงสูงขึ้น</li>
+            <li><Icon name="battery-charging" size={16} /> แบตเตอรี่หมดไฟช่วงฝนตกต่อเนื่องหลายวัน</li>
+            <li><Icon name="alert-triangle" size={16} /> ข้อมูลขาดหายเป็นช่วง ทำให้วิเคราะห์ไม่ต่อเนื่อง</li>
+          </ul>
+        </div>
+        <div class="washed rg-story-imgwrap">
+          <img
+            src="/assets/img/story-gen3.webp"
+            alt="Gen 3 ที่ติดตั้งจริง ที่ระโนด สงขลา"
+            loading="lazy"
+            width="766"
+            height="431"
+          />
+        </div>
+      </div>
+
+      <!-- Gen 4 — before/after redesign summary -->
+      <div class="rg-story-card rg-story-card-dark" data-reveal data-reveal-delay="1">
+        <span class="rg-story-pill">Gen 4 · Redesigned</span>
+        <h3 class="rg-h3 rg-h3-light"><span data-i18n="story.gen4.h3">ออกแบบใหม่จากหลักฐาน</span></h3>
+        <table class="rg-baa-table">
+          <thead>
+            <tr>
+              <th>ปัญหา Gen 3</th>
+              <th></th>
+              <th>ทางแก้ Gen 4</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              beforeAfter.map((row) => (
+                <tr>
+                  <td class="rg-baa-was">{row.was}</td>
+                  <td class="rg-baa-arrow">→</td>
+                  <td class="rg-baa-now">{row.now}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+        <div class="washed rg-story-imgwrap">
+          <img
+            src="/assets/img/story-gen4.webp"
+            alt="สรุป Gen 4"
+            loading="lazy"
+            width="766"
+            height="582"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Problem → solution timeline + engineer certification -->
+    <ol class="rg-timeline" data-reveal>
+      {
+        timeline.map((t) => (
+          <li class={`rg-timeline-item${t.problem ? " rg-timeline-problem" : ""}`}>
+            <div class="rg-timeline-when">{t.when}</div>
+            <div class="rg-timeline-title">{t.title}</div>
+            <p class="rg-timeline-desc">{t.desc}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <span class="rg-badge-cert">
+      <Icon name="shield-check" size={16} /> ตรวจรับและรับรองโดยวิศวกรวิชาชีพ (PE-signed)
+    </span>
+    <br />
+    <button type="button" class="rg-more-btn" data-modal-open="modal-story">
+      <Icon name="file-text" size={16} /> อ่านบทเรียนภาคสนามฉบับเต็ม
+    </button>
+  </div>
+
+  <Modal id="modal-story" eyebrow="The R&D Story" title="บทเรียนจากระโนด สงขลา">
+    <p>
+      Gen 3 คือต้นแบบที่เราติดตั้งจริงในนาข้าว 36 ไร่ ที่อำเภอระโนด จังหวัดสงขลา ในปี 2569 —
+      และมันสอนบทเรียนที่ห้องแล็บให้ไม่ได้
+    </p>
+    <p>
+      ตลอดฤดูฝนแรก uptime ของระบบตกลงเหลือเพียง <b>9.1%</b> น้ำท่วมขังทำให้อุปกรณ์ไฟฟ้าจมน้ำ
+      และแบตเตอรี่หมดไฟในช่วงที่ฝนตกต่อเนื่องหลายวันจนแผงโซลาร์ผลิตไฟไม่พอ
+    </p>
+    <p>
+      ทุกปัญหาถูกบันทึกเป็นข้อกำหนดการออกแบบใหม่ของ Gen 4 — ยกงานไฟฟ้าขึ้นสูง กันน้ำทั้งระบบระดับ
+      IP68 เปลี่ยนมาใช้โซลาร์สองหน้าพร้อมแบตเตอรี่สำรอง 5–11 วัน และผ่านการตรวจรับโดยวิศวกรวิชาชีพ
+      (PE-signed) ทั้งด้านโครงสร้างและระบบไฟฟ้า
+    </p>
+  </Modal>
+</section>

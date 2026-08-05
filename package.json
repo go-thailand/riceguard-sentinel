@@ -1,5 +1,5 @@
 {
-  "name": "npm-create-astro-latest-temp-astro",
+  "name": "riceguard-sentinel",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -12,6 +12,7 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^7.1.6"
+    "astro": "^7.1.6",
+    "d3": "^7.9.0"
   }
 }

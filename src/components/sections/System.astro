@@ -1,0 +1,69 @@
+---
+import SectionHeader from "../SectionHeader.astro";
+import Icon from "../Icon.astro";
+
+const layers = [
+  { icon: "radio", title: "เก็บข้อมูลที่ขอบ", en: "Edge Acquisition" },
+  { icon: "cpu", title: "ประมวลผลที่เครื่อง", en: "Inference" },
+  { icon: "globe", title: "ส่งข้อมูล", en: "Transport · LoRa" },
+  { icon: "cloud", title: "คลาวด์", en: "Cloud" },
+  { icon: "git-merge", title: "หลอมรวมข้อมูล", en: "Fusion" },
+  { icon: "database", title: "ฐานความรู้", en: "Knowledge" },
+  { icon: "smartphone", title: "แสดงผล", en: "Presentation" },
+];
+---
+
+<section id="system-overview" class="rg-section rg-bg-cream">
+  <div class="rg-container">
+    <SectionHeader
+      num="10"
+      labelKey="system.label"
+      labelTh="ภาพรวมระบบ AI"
+      labelEn="AI System Overview"
+      h2Key="system.h2"
+      h2Th="เส้นทางข้อมูล ตั้งแต่ต้นข้าวถึงคลาวด์"
+      cap="The full data journey, layer by layer"
+    />
+    <p class="rg-lead" data-reveal>
+      <span data-i18n="system.lead"
+        >แผนภาพระบบตั้งแต่การเก็บข้อมูลที่ขอบ การประมวลผล การส่งข้อมูล
+        จนถึงฐานความรู้และการแสดงผล</span
+      > — Edge Acquisition → Inference → Transport → Cloud → Fusion → Knowledge → Presentation.
+    </p>
+
+    <!-- Interactive 7-layer strip (horizontal scroll on mobile) -->
+    <div class="rg-layers" data-reveal>
+      {
+        layers.map((l, i) => (
+          <div class="rg-layer">
+            <div class="rg-layer-num">{String(i + 1).padStart(2, "0")}</div>
+            <div class="rg-layer-icon">
+              <Icon name={l.icon} size={20} class="rg-layer-svg" />
+            </div>
+            <div class="rg-layer-title">{l.title}</div>
+            <p class="rg-layer-en">{l.en}</p>
+          </div>
+        ))
+      }
+    </div>
+    <p class="rg-scroll-hint">
+      <Icon name="move-horizontal" size={14} /> เลื่อนแนวนอนเพื่อดูทุกชั้น
+    </p>
+
+    <div class="rg-diagram-wrap" data-reveal>
+      <img
+        src="/assets/img/ai-system-diagram.webp"
+        alt="ภาพรวมระบบ AI ของ RiceGuard"
+        loading="lazy"
+        width="1800"
+        height="665"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .rg-layer-icon :global(.rg-layer-svg) {
+    color: #5a7326;
+  }
+</style>

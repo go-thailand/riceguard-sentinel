@@ -1,0 +1,88 @@
+---
+import SectionHeader from "../SectionHeader.astro";
+import Icon from "../Icon.astro";
+
+const tools = [
+  { icon: "scan-search", key: "pest.tool0.th", th: "ตรวจจับด้วยภาพ", en: "Image detection · 7,000-pest dataset" },
+  { icon: "audio-lines", key: "pest.tool1.th", th: "คลื่นอัลตราโซนิก", en: "AI-tuned ultrasonic emitter" },
+  { icon: "bug", key: "pest.tool2.th", th: "กับดักฟีโรโมนอัจฉริยะ", en: "Smart pheromone trap + counter" },
+  { icon: "bird", key: "pest.tool3.th", th: "เสียงไล่นก AI", en: "AI predator bird-calls" },
+];
+
+const substats = [
+  { value: "120+", label: "ชนิดศัตรูพืช" },
+  { value: "94%", label: "ความแม่นยำ" },
+  { value: "รายวัน", label: "ข้อมูลเพิ่มขึ้น" },
+];
+---
+
+<section id="pest" class="rg-section rg-bg-white">
+  <div class="rg-container">
+    <SectionHeader
+      num="05"
+      labelKey="pest.label"
+      labelTh="การจัดการศัตรูพืชอย่างชาญฉลาด"
+      labelEn="Smart Pest Management"
+      h2Key="pest.h2"
+      h2Th="ใช้สารเคมีเท่าที่จำเป็น"
+      cap="Only the pesticide that's actually needed"
+    />
+    <p class="rg-lead" data-reveal>
+      <span data-i18n="pest.lead"
+        >ด้วยฐานภาพศัตรูพืชกว่า 7,000 ชนิด RiceGuard
+        ช่วยตรวจจับชนิดที่ถูกต้องและแจ้งปริมาณสารที่เหมาะสม</span
+      > — right pest, right dose, right time.
+    </p>
+    <div class="rg-pest-grid">
+      {
+        tools.map((t, i) => (
+          <div class="card rg-pest-card" data-reveal data-reveal-delay={String(i)}>
+            <div class="rg-pest-icon">
+              <Icon name={t.icon} size={22} class="rg-pest-svg" />
+            </div>
+            <h3 class="rg-h4">
+              <span data-i18n={t.key}>{t.th}</span>
+            </h3>
+            <p class="rg-pest-en">{t.en}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- 7,000-image dataset counter -->
+    <div class="rg-dataset" data-reveal>
+      <div class="rg-dataset-counter">
+        <span class="rg-dataset-count">7,000+</span>
+        <span class="rg-dataset-count-label">ภาพศัตรูพืชในฐานข้อมูล — และเพิ่มขึ้นทุกวัน</span>
+        <div class="rg-dataset-substats">
+          {
+            substats.map((s) => (
+              <div class="rg-dataset-substat">
+                <b>{s.value}</b>
+                <span>{s.label}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+      <div class="rg-dataset-thumbs">
+        {Array.from({ length: 18 }).map(() => (
+          <div class="rg-dataset-thumb"><Icon name="bug" size={16} /></div>
+        ))}
+      </div>
+    </div>
+
+    <div class="rg-note-strip" data-reveal>
+      <Icon name="shield-check" size={22} class="rg-note-svg" />
+      <p>
+        <span data-i18n="pest.notestrip">ระบบป้องกัน ไม่ใช่แค่ตรวจจับ</span> — an integrated
+        prevention system, not just detection.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .rg-pest-icon :global(.rg-pest-svg) { color: #5a7326; }
+  .rg-note-strip :global(.rg-note-svg) { color: #5a7326; flex: 0 0 auto; }
+</style>

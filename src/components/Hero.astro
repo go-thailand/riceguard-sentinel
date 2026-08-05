@@ -1,0 +1,80 @@
+---
+import Icon from "./Icon.astro";
+
+const stats = [
+  { value: "20–30%", key: "hero.stat0.th", th: "ประหยัดน้ำ", en: "Water saved" },
+  { value: "10–15%", key: "hero.stat1.th", th: "ผลผลิตเพิ่ม", en: "Yield increase" },
+  { value: "57%", key: "hero.stat2.th", th: "ประหยัดปูน", en: "Lime saved" },
+  { value: "20–30%", key: "hero.stat3.th", th: "ลดก๊าซมีเทน", en: "Methane cut" },
+];
+---
+
+<header id="top" class="rg-hero">
+  <div class="rg-hero-blob rg-hero-blob-a" aria-hidden="true"></div>
+  <div class="rg-hero-blob rg-hero-blob-b" aria-hidden="true"></div>
+  <div class="rg-hero-grid">
+    <div data-reveal>
+      <span class="tag tag-neutral rg-hero-eyebrow">
+        <Icon name="sprout" size={16} />
+        <span data-i18n="hero.eyebrow">งานวิจัยและพัฒนา</span> · Ongoing R&amp;D
+      </span>
+      <h1 class="rg-hero-title">
+        <span data-i18n="hero.title" data-i18n-html="1"
+          >เกษตรอัจฉริยะ<br />เพื่อชาวนาไทย<br /><span class="rg-accent">ด้วย AI</span></span
+        >
+      </h1>
+      <p class="rg-hero-sub">Advancing Thai rice farming with AI</p>
+      <p class="rg-hero-desc">
+        <span data-i18n="hero.desc"
+          >RiceGuard Sentinel คือการทดลองนำ IoT และ AI มาช่วยชาวนาไทย ให้ใช้น้ำ ปุ๋ย
+          และการดูแลศัตรูพืชอย่างแม่นยำ</span
+        > — a research effort exploring how sensing and machine learning can support rice farmers, not
+        replace their judgement.
+      </p>
+      <div class="rg-hero-cta">
+        <a href="#story" class="btn btn-primary"
+          ><span data-i18n="hero.cta1">อ่านเรื่องราว</span> · Read the story</a
+        >
+        <a href="#knowledge" class="btn btn-secondary"
+          ><span data-i18n="hero.cta2">ฐานความรู้เปิด</span> · Open Knowledge Base</a
+        >
+      </div>
+    </div>
+    <div class="rg-hero-media" data-reveal data-reveal-delay="2">
+      <div class="washed rg-hero-imgwrap rg-float">
+        <img
+          src="/assets/img/hero-device.webp"
+          alt="สถานี Gen 4 ในนาข้าวไทย"
+          loading="eager"
+          width="643"
+          height="804"
+        />
+      </div>
+      <div class="rg-hero-badge">
+        <span class="rg-hero-badge-th"
+          ><span data-i18n="hero.badge">ออกแบบและพัฒนาในประเทศไทย</span></span
+        >
+        <span class="rg-hero-badge-en">Designed &amp; engineered in Thailand</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="rg-impact-strip">
+    {
+      stats.map((s, i) => (
+        <div class="rg-stat-card" data-reveal data-reveal-delay={String(i)}>
+          <div class="rg-stat-value">{s.value}</div>
+          <div class="rg-stat-th">
+            <span data-i18n={s.key}>{s.th}</span>
+          </div>
+          <div class="rg-stat-en">{s.en}</div>
+        </div>
+      ))
+    }
+  </div>
+  <p class="rg-impact-note">
+    <span data-i18n="hero.impactnote"
+      >ตัวเลขจากการทดลองภาคสนาม อยู่ระหว่างการวิจัยเพิ่มเติม</span
+    > · Figures from field trials, under continued research — not guaranteed outcomes.
+  </p>
+</header>

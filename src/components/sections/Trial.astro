@@ -1,0 +1,128 @@
+---
+import SectionHeader from "../SectionHeader.astro";
+
+const stats = [
+  { value: "pH 4.7", key: "trial.stat0.th", th: "จุดที่กรดจัดที่สุด" },
+  { value: "57%", key: "trial.stat1.th", th: "ประหยัดปูนโดโลไมต์" },
+  { value: "36 ไร่", key: "trial.stat2.th", th: "พื้นที่ทดลอง" },
+];
+
+const compare = [
+  { metric: "ปูนโดโลไมต์ที่ใช้", control: "100%", sentinel: "43%" },
+  { metric: "วิธีการใส่ปูน", control: "ทั้งแปลงเท่ากัน", sentinel: "เฉพาะจุดที่กรดจัด" },
+  { metric: "ความสม่ำเสมอ pH", control: "ต่ำ", sentinel: "สูง" },
+];
+
+// pH readings across 8 zones of the trial plot. Height maps pH 4→7 onto 0→100%.
+const phZones = [4.7, 5.1, 5.5, 6.0, 6.2, 5.8, 4.9, 6.3];
+const barHeight = (ph: number) => Math.round(((ph - 4) / 3) * 100);
+---
+
+<section id="trial" class="rg-section rg-bg-white">
+  <div class="rg-container">
+    <SectionHeader
+      num="08"
+      labelKey="trial.label"
+      labelTh="ผลการทดลองภาคสนาม"
+      labelEn="Field Trial Results"
+      h2Key="trial.h2"
+      h2Th="ระโนด สงขลา — บทเรียนจริง"
+      cap="Ranot, Songkhla — what the soil revealed"
+    />
+    <div class="rg-trial-grid">
+      <div class="washed rg-trial-imgwrap" data-reveal>
+        <img
+          src="/assets/img/trial-map.webp"
+          alt="แผนที่ pH ดิน เปรียบเทียบแปลงควบคุมกับแปลง Sentinel"
+          loading="lazy"
+          width="416"
+          height="870"
+        />
+      </div>
+      <div class="rg-trial-side" data-reveal data-reveal-delay="1">
+        <p class="rg-lead" style="margin:0;">
+          <span data-i18n="trial.lead"
+            >เซ็นเซอร์พบดินกรดจัดถึง pH 4.7 ซึ่งมองไม่เห็นด้วยตาเปล่า
+            การใส่ปูนแบบเฉพาะจุดประหยัดได้ 57%</span
+          >
+        </p>
+        <div class="rg-trial-stats">
+          {
+            stats.map((s) => (
+              <div class="rg-trial-stat">
+                <div class="rg-trial-value">{s.value}</div>
+                <div class="rg-trial-th">
+                  <span data-i18n={s.key}>{s.th}</span>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Control vs Sentinel comparison + pH distribution chart -->
+    <div class="rg-trial-detail" data-reveal>
+      <div class="rg-trial-detail-col">
+        <h3 class="rg-h4">เปรียบเทียบแปลงควบคุมกับแปลง Sentinel</h3>
+        <table class="rg-compare-table">
+          <thead>
+            <tr>
+              <th>ตัวชี้วัด</th>
+              <th>แปลงควบคุม</th>
+              <th class="rg-col-sentinel">แปลง Sentinel</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              compare.map((r) => (
+                <tr>
+                  <td>{r.metric}</td>
+                  <td>{r.control}</td>
+                  <td class="rg-col-sentinel">{r.sentinel}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <div class="rg-trial-detail-col">
+        <h3 class="rg-h4">การกระจายค่า pH ใน 8 โซน</h3>
+        <div class="rg-phchart">
+          <div class="rg-phchart-bars">
+            {
+              phZones.map((ph, i) => (
+                <div class="rg-phbar">
+                  <span>{ph.toFixed(1)}</span>
+                  <div
+                    class={`rg-phbar-fill${ph < 5.5 ? " is-acid" : ""}`}
+                    style={`height:${barHeight(ph)}%`}
+                  />
+                  <span>Z{i + 1}</span>
+                </div>
+              ))
+            }
+          </div>
+          <p class="rg-phchart-note">
+            แถบสีส้มคือโซนที่กรดจัด (pH &lt; 5.5) ซึ่งได้รับปูนแบบเฉพาะจุด · หมายเหตุ: uptime
+            ภาคสนามช่วง Gen 3 อยู่ที่ 9.1% ตามจริง
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .rg-trial-detail {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+  @media (min-width: 800px) {
+    .rg-trial-detail {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

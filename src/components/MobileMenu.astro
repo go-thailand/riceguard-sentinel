@@ -1,0 +1,26 @@
+---
+const navLinks = [
+  { href: "#story", key: "nav.story", th: "เรื่องราว", en: "Story" },
+  { href: "#how", key: "nav.how", th: "ทำงานอย่างไร", en: "How" },
+  { href: "#device", key: "nav.device", th: "อุปกรณ์", en: "Device" },
+  { href: "#knowledge", key: "nav.knowledge", th: "ฐานความรู้", en: "Knowledge" },
+  { href: "#contact", key: "nav.contact", th: "ติดต่อ", en: "Contact" },
+];
+---
+
+<div class="rg-mobile-menu" id="rg-mobile-menu">
+  {
+    navLinks.map((link) => (
+      <a href={link.href} class="rg-navlink rg-mobile-link">
+        <span data-i18n={link.key}>{link.th}</span>{" "}
+        <span class="rg-navlink-en">/ {link.en}</span>
+      </a>
+    ))
+  }
+  <div class="rg-langswitch rg-langswitch-mobile" role="group" aria-label="Language">
+    <button type="button" class="rg-lang-btn is-active" data-lang="th">ไทย</button>
+    <button type="button" class="rg-lang-btn" data-lang="en">EN</button>
+    <button type="button" class="rg-lang-btn" data-lang="zh">中文</button>
+  </div>
+</div>
+<div class="rg-mobile-backdrop" id="rg-mobile-backdrop"></div>

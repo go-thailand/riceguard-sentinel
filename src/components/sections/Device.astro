@@ -1,0 +1,134 @@
+---
+import Icon from "../Icon.astro";
+import Modal from "../Modal.astro";
+
+const specs = [
+  { icon: "ruler", value: "4 m", key: "device.spec0.th", th: "ความสูง" },
+  { icon: "sun", value: "2×200W", key: "device.spec1.th", th: "โซลาร์ 2 หน้า" },
+  { icon: "battery-charging", value: "5–11 วัน", key: "device.spec2.th", th: "สำรองไฟ" },
+  { icon: "gauge", value: "18", key: "device.spec3.th", th: "การวัด" },
+  { icon: "shield", value: "IP68", key: "device.spec4.th", th: "กันน้ำ" },
+  { icon: "zap", value: "40 TOPS", key: "device.spec5.th", th: "AI ที่ขอบ" },
+];
+
+const features = [
+  {
+    icon: "wrench",
+    title: "ช่องซ่อมบำรุงล่าง",
+    desc: "เข้าถึงแบตเตอรี่และตัวควบคุมไฟได้จากพื้น โดยไม่ต้องรื้อเสา",
+  },
+  {
+    icon: "wrench",
+    title: "ช่องซ่อมบำรุงบน",
+    desc: "เปลี่ยนกล้องและเซ็นเซอร์ส่วนบนได้อย่างปลอดภัย",
+  },
+  {
+    icon: "zap",
+    title: "สายล่อฟ้า",
+    desc: "ป้องกันฟ้าผ่าตามมาตรฐาน ปกป้องอุปกรณ์อิเล็กทรอนิกส์",
+  },
+  {
+    icon: "anchor",
+    title: "ฐานรากคอนกรีต",
+    desc: "ยึดเสาให้มั่นคงในดินนาที่อ่อนนุ่มและมีน้ำขัง",
+  },
+];
+
+const fullSpecs = [
+  ["ความสูงรวม", "4 เมตร"],
+  ["โซลาร์เซลล์", "2 × 200W (สองหน้า)"],
+  ["แบตเตอรี่สำรอง", "5–11 วัน"],
+  ["จำนวนการวัด", "18 พารามิเตอร์"],
+  ["มาตรฐานกันน้ำ", "IP68"],
+  ["หน่วยประมวลผล AI", "40 TOPS (Edge)"],
+  ["เครือข่าย", "LoRa + 4G สำรอง"],
+  ["โครงสร้าง", "เสาปริซึมหกเหลี่ยมบิด · PE-signed"],
+];
+---
+
+<section id="device" class="rg-section rg-bg-dark">
+  <div class="rg-container">
+    <div class="rg-secnum" style="color:#C9A227;">
+      <span class="rg-secnum-n">03</span>
+      <span class="rg-secnum-line" style="background:#C9A227;"></span>
+      <span class="rg-secnum-label">
+        <span data-i18n="device.label">อุปกรณ์รุ่นที่ 4</span> · The Gen 4 Device
+      </span>
+    </div>
+    <div class="rg-device-grid">
+      <div class="rg-device-imgwrap" data-reveal>
+        <img
+          src="/assets/img/device-render.webp"
+          alt="สถานี Gen 4 — เสาปริซึมหกเหลี่ยมบิด สูง 4 เมตร มงกุฎโซลาร์สองหน้า"
+          loading="lazy"
+          width="607"
+          height="758"
+        />
+      </div>
+      <div data-reveal data-reveal-delay="1">
+        <h2 class="rg-h2 rg-h2-light">
+          <span data-i18n="device.h2">สถานีเฝ้าระวังครบในหนึ่งเดียว</span>
+        </h2>
+        <p class="rg-cap" style="color:#C9A227;">One all-in-one field station</p>
+        <p class="rg-lead rg-lead-light">
+          <span data-i18n="device.lead"
+            >สูง 4 เมตร พลังงานแสงอาทิตย์ กันน้ำท่วม พร้อมคอมพิวเตอร์ประมวลผลที่ขอบและเครือข่าย
+            LoRa</span
+          > — engineered to survive Thailand's monsoons.
+        </p>
+        <div class="rg-spec-grid">
+          {
+            specs.map((s) => (
+              <div class="rg-spec-card">
+                <Icon name={s.icon} size={20} class="rg-spec-icon" />
+                <div class="rg-spec-value">{s.value}</div>
+                <div class="rg-spec-th">
+                  <span data-i18n={s.key}>{s.th}</span>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <div class="rg-device-extra">
+          {
+            features.map((f) => (
+              <div class="rg-device-feature">
+                <Icon name={f.icon} size={20} />
+                <div>
+                  <div class="rg-device-feature-title">{f.title}</div>
+                  <p class="rg-device-feature-desc">{f.desc}</p>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+
+        <button type="button" class="rg-more-btn is-onlight" data-modal-open="modal-device">
+          <Icon name="gauge" size={16} /> ดูสเปกทั้งหมด
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <Modal id="modal-device" eyebrow="The Gen 4 Device" title="สเปกอุปกรณ์ RiceGuard Sentinel">
+    <table class="rg-spec-table">
+      <tbody>
+        {
+          fullSpecs.map(([label, value]) => (
+            <tr>
+              <td>{label}</td>
+              <td>{value}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Modal>
+</section>
+
+<style>
+  .rg-spec-card :global(.rg-spec-icon) {
+    color: #c9a227;
+  }
+</style>
