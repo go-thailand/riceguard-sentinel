@@ -1,18 +1,24 @@
 ---
 import Icon from "../Icon.astro";
+import MapLegend from "../MapLegend.astro";
+import ProvinceModal from "../ProvinceModal.astro";
+import ProvinceData from "../ProvinceData.astro";
 import { provinces, statusLabel } from "../../data/provinces";
 ---
 
 <section id="expansion" class="rg-section">
   <div class="rg-container rg-expansion-grid">
-    <!-- Interactive D3 map (rendered client-side into this <svg>) -->
+    <!-- Small interactive map (drawn client-side by RGMap into this <svg>).
+         Clicking the map background (or the corner button) opens the Map Modal;
+         clicking a province dot opens the Province Modal (stopPropagation keeps
+         the two apart). -->
     <div class="rg-map-wrap" data-reveal>
-      <svg id="rg-map-svg" class="rg-map-svg" aria-label="แผนที่พื้นที่วิจัย 12 จังหวัด"></svg>
-      <div class="rg-map-legend">
-        <span><i style="background:#8FB43A"></i> กำลังเก็บข้อมูล</span>
-        <span><i style="background:#C9A227"></i> เตรียมติดตั้ง</span>
-        <span><i style="background:#9a968f"></i> วางแผน</span>
-      </div>
+      <button type="button" class="rg-map-expand" data-modal-open="modal-map" aria-label="ขยายดูแผนที่">
+        <Icon name="maximize-2" size={15} /> ขยายแผนที่
+      </button>
+      <svg id="rg-map-home" class="rg-map-svg" aria-label="แผนที่พื้นที่วิจัย 12 จังหวัด 4 ภูมิภาค"
+      ></svg>
+      <MapLegend />
     </div>
 
     <div data-reveal data-reveal-delay="1">
@@ -29,7 +35,7 @@ import { provinces, statusLabel } from "../../data/provinces";
         <span data-i18n="expansion.lead"
           >เหนือ · อีสาน · กลาง · ใต้ — เปรียบเทียบแปลงแบบดั้งเดิมกับแปลงที่ใช้ Sentinel
           ทั้งฤดูฝนและฤดูแล้ง</span
-        > — คลิกจุดบนแผนที่เพื่อดูรายละเอียดแต่ละจังหวัด
+        > — คลิกจุดบนแผนที่เพื่อดูรายละเอียด หรือกด "ขยายแผนที่"
       </p>
       <div class="rg-province-grid">
         {
@@ -47,172 +53,81 @@ import { provinces, statusLabel } from "../../data/provinces";
     </div>
   </div>
 
-  <!-- Province modal — hidden by default (.rg-modal { display:none }).
-       Opened by the D3 click handler; closing is handled by the shared
-       modal wiring in src/scripts/ui.js (backdrop / Escape / close button). -->
+  <!-- Province Modal (feature kept) -->
+  <ProvinceModal />
+
+  <!-- Map Modal (new) — bigger, view-only map + fullscreen link to /research-map -->
   <div
     class="rg-modal"
-    id="modal-province"
+    id="modal-map"
     role="dialog"
     aria-modal="true"
     aria-hidden="true"
-    aria-labelledby="rg-prov-name"
+    aria-label="แผนที่พื้นที่วิจัย 12 จังหวัด"
   >
-    <div class="rg-modal-panel">
+    <div class="rg-modal-panel rg-modal-panel-map">
       <div class="rg-modal-head">
         <div>
-          <div class="rg-modal-eyebrow" id="rg-prov-region">ภูมิภาค</div>
-          <h3 class="rg-modal-title" id="rg-prov-name">จังหวัด</h3>
+          <div class="rg-modal-eyebrow">4-Region Expansion</div>
+          <h3 class="rg-modal-title">แผนที่พื้นที่วิจัย 12 จังหวัด</h3>
         </div>
-        <button type="button" class="rg-modal-close" data-modal-close aria-label="ปิด">
-          <Icon name="x" size={18} />
-        </button>
+        <div class="rg-modal-head-actions">
+          <a class="rg-modal-fs" href="/research-map" aria-label="ขยายเต็มจอ" title="ขยายเต็มจอ">
+            <Icon name="maximize" size={18} />
+          </a>
+          <button type="button" class="rg-modal-close" data-modal-close aria-label="ปิด">
+            <Icon name="x" size={18} />
+          </button>
+        </div>
       </div>
-      <div class="rg-modal-body">
-        <p><span class="rg-status" id="rg-prov-status">สถานะ</span></p>
-        <p id="rg-prov-desc">รายละเอียดพื้นที่วิจัย</p>
-        <a class="btn btn-primary" id="rg-prov-link" href="/province">
-          ดูข้อมูลหน้าแปลง <Icon name="arrow-right" size={16} />
-        </a>
+      <div class="rg-map-modal-body">
+        <svg id="rg-map-modal" class="rg-map-svg" aria-label="แผนที่พื้นที่วิจัย (มุมมองขยาย)"></svg>
+        <MapLegend />
       </div>
     </div>
   </div>
+
+  <ProvinceData />
+
+  <!-- Astro has no bundler step for is:inline, so d3 + topojson load from CDN,
+       then the shared renderer (/scripts/rg-map.js), then this init. -->
+  <script is:inline src="https://unpkg.com/d3@7/dist/d3.min.js"></script>
+  <script is:inline src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
+  <script is:inline src="/scripts/rg-map.js"></script>
+  <script is:inline>
+    (function () {
+      if (typeof RGMap === "undefined") return;
+      var el = document.getElementById("rg-province-data");
+      if (!el) return;
+      var data = JSON.parse(el.textContent);
+      var expandBtn = document.querySelector('[data-modal-open="modal-map"]');
+
+      // Small map — interactive (province click → Province Modal).
+      RGMap.draw({
+        svg: "#rg-map-home",
+        provinces: data,
+        width: 520,
+        height: 700,
+        interactive: true,
+        onProvinceClick: RGMap.openProvinceModal,
+        onReady: function (svg) {
+          svg.style("cursor", "zoom-in");
+          // Click on the map background (not a province) opens the Map Modal.
+          svg.on("click", function () {
+            if (expandBtn) expandBtn.click();
+          });
+        },
+      });
+
+      // Big map inside the Map Modal — view-only (no province clicks).
+      // Drawn now; SVG is viewBox-based so it renders fine while hidden.
+      RGMap.draw({
+        svg: "#rg-map-modal",
+        provinces: data,
+        width: 520,
+        height: 700,
+        interactive: false,
+      });
+    })();
+  </script>
 </section>
-
-<script>
-  // D3 renders the province markers and wires click → modal.
-  // Data is imported as an ES module (bundled by Astro/Vite) rather than shared
-  // through a global — so no cross-scope variables and no need for is:inline.
-  import { select, scaleLinear } from "d3";
-  import { provinces, regionAnchors, statusLabel } from "../../data/provinces";
-
-  const STATUS_COLOR: Record<string, string> = {
-    live: "#8FB43A",
-    soon: "#C9A227",
-    plan: "#9a968f",
-  };
-
-  const W = 380;
-  const H = 560;
-  const PAD = 48;
-
-  function renderMap() {
-    const svg = select<SVGSVGElement, unknown>("#rg-map-svg");
-    if (svg.empty()) return;
-
-    // Linear projection of Thailand's lat/lng bounds onto the SVG canvas.
-    const x = scaleLinear().domain([97.2, 105.8]).range([PAD, W - PAD]);
-    const y = scaleLinear().domain([5.4, 20.8]).range([H - PAD, PAD]);
-
-    svg.attr("viewBox", `0 0 ${W} ${H}`).attr("role", "img");
-    svg.selectAll("*").remove();
-
-    // Map board
-    svg
-      .append("rect")
-      .attr("class", "rg-map-board")
-      .attr("x", 16)
-      .attr("y", 16)
-      .attr("width", W - 32)
-      .attr("height", H - 32)
-      .attr("rx", 22);
-
-    // Region watermarks
-    svg
-      .selectAll("text.rg-map-region")
-      .data(regionAnchors)
-      .join("text")
-      .attr("class", "rg-map-region")
-      .attr("x", (d) => x(d.lng))
-      .attr("y", (d) => y(d.lat))
-      .text((d) => d.region);
-
-    // Province groups: blink circle + solid dot + label, all inside one <g>
-    const groups = svg
-      .selectAll("g.rg-map-pin")
-      .data(provinces)
-      .join("g")
-      .attr("class", "rg-map-pin")
-      .attr("transform", (d) => `translate(${x(d.lng)},${y(d.lat)})`)
-      .attr("tabindex", 0)
-      .attr("role", "button")
-      .attr("aria-label", (d) => `${d.name} — ภาค${d.region}, ${statusLabel[d.status]}`);
-
-    groups.append("title").text((d) => d.name);
-
-    // Outer blinking circle with an SMIL <animate> on its radius
-    groups.each(function (d, i) {
-      const begin = `${(i * 0.12).toFixed(2)}s`;
-      const blink = select(this)
-        .append("circle")
-        .attr("class", "rg-map-blink")
-        .attr("r", 6.5)
-        .attr("fill", STATUS_COLOR[d.status])
-        .attr("fill-opacity", 0.35);
-      blink
-        .append("animate")
-        .attr("attributeName", "r")
-        .attr("values", "6.5;13;6.5")
-        .attr("dur", "1.8s")
-        .attr("begin", begin)
-        .attr("repeatCount", "indefinite");
-      blink
-        .append("animate")
-        .attr("attributeName", "fill-opacity")
-        .attr("values", "0.35;0;0.35")
-        .attr("dur", "1.8s")
-        .attr("begin", begin)
-        .attr("repeatCount", "indefinite");
-    });
-
-    // Solid inner dot
-    groups
-      .append("circle")
-      .attr("class", "rg-map-dot")
-      .attr("r", 5)
-      .attr("fill", (d) => STATUS_COLOR[d.status]);
-
-    // Wide invisible hit target so the whole marker is easy to click/tap
-    groups.append("circle").attr("class", "rg-map-hit").attr("r", 15);
-
-    // Province label
-    groups
-      .append("text")
-      .attr("class", "rg-map-label")
-      .attr("y", 24)
-      .text((d) => d.name);
-
-    // Interaction: click (and keyboard) opens the modal for that province
-    groups.on("click", (_event, d) => openProvinceModal(d));
-    groups.on("keydown", (event, d) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        openProvinceModal(d);
-      }
-    });
-  }
-
-  function openProvinceModal(p: (typeof provinces)[number]) {
-    const modal = document.getElementById("modal-province");
-    if (!modal) return;
-
-    (modal.querySelector("#rg-prov-name") as HTMLElement).textContent = p.name;
-    (modal.querySelector("#rg-prov-region") as HTMLElement).textContent =
-      `ภาค${p.region} · ${p.nameEn}`;
-    const statusEl = modal.querySelector("#rg-prov-status") as HTMLElement;
-    statusEl.textContent = statusLabel[p.status];
-    statusEl.className = `rg-status rg-status-${p.status}`;
-    (modal.querySelector("#rg-prov-desc") as HTMLElement).textContent = p.note;
-    (modal.querySelector("#rg-prov-link") as HTMLAnchorElement).setAttribute(
-      "href",
-      `/province/${p.slug}`
-    );
-
-    modal.classList.add("is-open");
-    modal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-    (modal.querySelector("[data-modal-close]") as HTMLElement | null)?.focus();
-  }
-
-  renderMap();
-</script>

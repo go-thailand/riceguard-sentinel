@@ -1,0 +1,10 @@
+---
+import { provinces, statusLabel } from "../data/provinces";
+
+// JSON data island read by the client-side (is:inline) map script.
+// provinces.ts stays the single source of truth.
+const mapData = provinces.map((p) => ({ ...p, statusLabel: statusLabel[p.status] }));
+---
+
+<script type="application/json" id="rg-province-data" is:inline set:html={JSON.stringify(mapData)}
+></script>

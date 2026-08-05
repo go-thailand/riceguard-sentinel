@@ -274,43 +274,83 @@
 .rg-scroll-hint { font-size: 11px; color: #9a968f; margin: 10px 0 0; display: flex; align-items: center; gap: 6px; }
 @media (min-width: 1000px) { .rg-layer { flex: 1 1 0; } .rg-scroll-hint { display: none; } }
 
-/* ---------- 09 Expansion: interactive D3 province map ----------
-   Elements below are created dynamically by D3 (src Expansion.astro <script>),
-   so these rules must be GLOBAL — Astro's scoped styles can't reach them. */
+/* ---------- 09 Expansion: interactive Thailand map (D3 + world-atlas) ----------
+   Markers/paths are created dynamically by the is:inline D3 script, so these
+   rules must be GLOBAL — Astro's scoped styles can't reach them. */
 .rg-map-wrap {
   position: relative;
-  background: linear-gradient(160deg, #fff, var(--rg-cream));
+  background: #f5ead8;
   border: 1px solid rgba(90, 115, 38, 0.16);
-  border-radius: 20px; padding: 14px;
+  border-radius: 20px; overflow: hidden;
   box-shadow: 0 12px 34px rgba(90, 115, 38, 0.12);
 }
-.rg-map-svg { width: 100%; height: auto; display: block; overflow: visible; }
-.rg-map-board { fill: rgba(90, 115, 38, 0.05); stroke: rgba(90, 115, 38, 0.14); }
-.rg-map-region {
-  fill: rgba(90, 115, 38, 0.16); font-family: var(--font-heading);
-  font-size: 15px; text-anchor: middle; pointer-events: none; letter-spacing: 0.04em;
-}
+.rg-map-svg { width: 100%; height: auto; display: block; }
 .rg-map-pin { cursor: pointer; }
 .rg-map-pin:focus { outline: none; }
 .rg-map-blink { pointer-events: none; }
+.rg-map-hit { fill: transparent; }
 .rg-map-dot {
-  stroke: #fff; stroke-width: 1.5;
   transition: transform 0.15s ease;
   transform-box: fill-box; transform-origin: center;
 }
 .rg-map-pin:hover .rg-map-dot,
-.rg-map-pin:focus-visible .rg-map-dot { transform: scale(1.4); }
-.rg-map-hit { fill: transparent; }
+.rg-map-pin:focus-visible .rg-map-dot { transform: scale(1.35); }
 .rg-map-label {
-  font-size: 11px; fill: var(--rg-dark); text-anchor: middle; pointer-events: none;
-  font-weight: 600; paint-order: stroke; stroke: #fff; stroke-width: 3px; stroke-linejoin: round;
+  font-size: 10.5px; fill: var(--rg-dark); text-anchor: middle; pointer-events: none;
+  font-weight: 700; paint-order: stroke; stroke: #fbf6ec; stroke-width: 3px; stroke-linejoin: round;
 }
-.rg-map-pin:hover .rg-map-label { fill: var(--rg-green); }
+.rg-map-pin:hover .rg-map-label { fill: #000; }
+
+/* Legend — bottom-left overlay */
 .rg-map-legend {
-  display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 12px;
+  position: absolute; bottom: 14px; left: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(90, 115, 38, 0.18);
+  border-radius: 14px; padding: 10px 12px;
+  backdrop-filter: blur(4px); box-shadow: 0 6px 18px rgba(90, 115, 38, 0.12);
 }
-.rg-map-legend span { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: #6f6b64; font-weight: 600; }
-.rg-map-legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
-@media (prefers-reduced-motion: reduce) {
-  .rg-map-blink animate { display: none; }
+.rg-map-legend-title { font-size: 11px; font-weight: 700; color: var(--rg-dark); margin-bottom: 7px; }
+.rg-map-legend-items { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
+.rg-map-legend-items span { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: #4c4a46; font-weight: 600; }
+.rg-map-legend-items i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex: 0 0 auto; }
+.rg-map-pin.is-static { cursor: default; }
+
+/* "Expand map" button — corner of the map frame */
+.rg-map-expand {
+  position: absolute; top: 12px; right: 12px; z-index: 2;
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
+  background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(90, 115, 38, 0.18);
+  border-radius: 999px; padding: 7px 12px;
+  font-family: var(--font-body); font-weight: 700; font-size: 12px; color: var(--rg-green);
+  backdrop-filter: blur(4px); box-shadow: 0 6px 18px rgba(90, 115, 38, 0.12);
 }
+.rg-map-expand:hover { background: #fff; }
+
+/* Map Modal — larger panel holding the zoomed view-only map */
+.rg-modal-panel-map { width: min(94vw, 780px); max-height: 92vh; padding: 18px 18px 14px; }
+.rg-modal-head-actions { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+.rg-modal-fs {
+  display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px;
+  border-radius: 999px; background: rgba(90, 115, 38, 0.1); color: var(--rg-green);
+  border: none; cursor: pointer; text-decoration: none;
+}
+.rg-modal-fs:hover { background: rgba(90, 115, 38, 0.2); }
+.rg-map-modal-body {
+  position: relative; margin-top: 8px; border-radius: 16px; overflow: hidden;
+  background: #f5ead8; display: flex; justify-content: center;
+}
+.rg-map-modal-body .rg-map-svg { width: auto; max-width: 100%; height: min(72vh, 760px); }
+
+/* Full-screen research map page (/research-map) */
+.rg-map-full { position: fixed; inset: 0; width: 100vw; height: 100vh; background: #f5ead8; overflow: hidden; }
+.rg-map-full .rg-map-svg { width: 100vw; height: 100vh; }
+.rg-map-full-back {
+  position: fixed; top: 16px; left: 16px; z-index: 10;
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(255, 255, 255, 0.92); border: 1px solid rgba(90, 115, 38, 0.18);
+  border-radius: 999px; padding: 9px 15px;
+  font-weight: 700; font-size: 13px; color: var(--rg-green); text-decoration: none;
+  box-shadow: 0 6px 18px rgba(90, 115, 38, 0.14);
+}
+.rg-map-full-back:hover { background: #fff; }
+.rg-map-full-back .rg-icon { transform: rotate(180deg); }
