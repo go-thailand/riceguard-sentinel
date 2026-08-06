@@ -1,0 +1,27 @@
+---
+import { t } from "../i18n/ui";
+
+const navLinks = [
+  { href: "#story", key: "nav.story" },
+  { href: "#how", key: "nav.how" },
+  { href: "#device", key: "nav.device" },
+  { href: "#knowledge", key: "nav.knowledge" },
+  { href: "#contact", key: "nav.contact" },
+];
+---
+
+<div class="rg-mobile-menu" id="rg-mobile-menu">
+  {
+    navLinks.map((link) => (
+      <a href={link.href} class="rg-navlink rg-mobile-link" data-i18n={link.key}>
+        {t(link.key)}
+      </a>
+    ))
+  }
+  <div class="rg-langswitch rg-langswitch-mobile" role="group" aria-label="Language">
+    <button type="button" class="rg-lang-btn is-active" data-lang="th">ไทย</button>
+    <button type="button" class="rg-lang-btn" data-lang="en">EN</button>
+    <button type="button" class="rg-lang-btn" data-lang="zh">中文</button>
+  </div>
+</div>
+<div class="rg-mobile-backdrop" id="rg-mobile-backdrop"></div>

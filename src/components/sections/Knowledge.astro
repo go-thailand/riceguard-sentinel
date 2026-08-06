@@ -1,0 +1,103 @@
+---
+import Icon from "../Icon.astro";
+import { t } from "../../i18n/ui";
+
+const tiers = [
+  { level: "Field", key: "knowledge.tier0.th", en: "Plot-level insights — Songkhla, Chiang Rai, Amnat Charoen." },
+  { level: "Regional", key: "knowledge.tier1.th", en: "North / Northeast / Central / South aggregation." },
+  { level: "National", key: "knowledge.tier2.th", en: "Thailand-wide rice intelligence, fed back to every device." },
+];
+
+const varieties = [
+  { nameKey: "knowledge.variety0.name", metaKey: "knowledge.variety0.meta" },
+  { nameKey: "knowledge.variety1.name", metaKey: "knowledge.variety1.meta" },
+  { nameKey: "knowledge.variety2.name", metaKey: "knowledge.variety2.meta" },
+  { nameKey: "knowledge.variety3.name", metaKey: "knowledge.variety3.meta" },
+];
+
+const steps = [
+  { titleKey: "knowledge.step0.title", descKey: "knowledge.step0.desc" },
+  { titleKey: "knowledge.step1.title", descKey: "knowledge.step1.desc" },
+  { titleKey: "knowledge.step2.title", descKey: "knowledge.step2.desc" },
+];
+---
+
+<section id="knowledge" class="rg-section rg-bg-green">
+  <div class="rg-blob-decor" aria-hidden="true"></div>
+  <div class="rg-container rg-container-rel">
+    <div class="rg-secnum" style="color:#F5EAD8;">
+      <span class="rg-secnum-n">06</span>
+      <span class="rg-secnum-line" style="background:#F5EAD8;"></span>
+      <span class="rg-secnum-label" style="color:rgba(245,234,216,0.9);">
+        <span data-i18n="knowledge.label">{t("knowledge.label")}</span> · The Ultimate Prize
+      </span>
+    </div>
+    <h2 class="rg-h2 rg-h2-light rg-h2-wide">
+      <span data-i18n="knowledge.h2">{t("knowledge.h2")}</span>
+    </h2>
+    <p class="rg-cap" style="color:#F5EAD8; font-size:24px;" data-i18n="cap.knowledge">
+      {t("cap.knowledge")}
+    </p>
+    <p class="rg-lead rg-lead-onlgreen" data-reveal>
+      <span data-i18n="knowledge.lead">{t("knowledge.lead")}</span> — knowledge that grows from Field
+      → Regional → National and flows back to every device.
+    </p>
+    <div class="rg-kb-grid">
+      {
+        tiers.map((tier) => (
+          <div class="rg-kb-card" data-reveal>
+            <div class="rg-kb-level">{tier.level}</div>
+            <h3 class="rg-h4 rg-h4-light">
+              <span data-i18n={tier.key}>{t(tier.key)}</span>
+            </h3>
+            <p class="rg-kb-en">{tier.en}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- Rice-variety picker + download-to-device steps -->
+    <div class="rg-variety">
+      <div class="rg-variety-picker" data-reveal>
+        <div class="rg-variety-search">
+          <Icon name="search" size={18} />
+          <input
+            type="text"
+            placeholder={t("knowledge.search")}
+            data-i18n-placeholder="knowledge.search"
+            aria-label={t("knowledge.search")}
+          />
+        </div>
+        <div class="rg-variety-list">
+          {
+            varieties.map((v) => (
+              <div class="rg-variety-item">
+                <div>
+                  <div class="rg-variety-name" data-i18n={v.nameKey}>{t(v.nameKey)}</div>
+                  <div class="rg-variety-meta" data-i18n={v.metaKey}>{t(v.metaKey)}</div>
+                </div>
+                <button type="button" class="rg-variety-dl">
+                  <Icon name="download" size={14} /> <span data-i18n="knowledge.dl">{t("knowledge.dl")}</span>
+                </button>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+      <div data-reveal data-reveal-delay="1">
+        <ol class="rg-steps">
+          {
+            steps.map((s) => (
+              <li class="rg-step">
+                <div>
+                  <div class="rg-step-title" data-i18n={s.titleKey}>{t(s.titleKey)}</div>
+                  <p class="rg-step-desc" data-i18n={s.descKey}>{t(s.descKey)}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>

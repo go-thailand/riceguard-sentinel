@@ -1,0 +1,49 @@
+---
+import Icon from "./Icon.astro";
+import { t } from "../i18n/ui";
+
+const navLinks = [
+  { href: "#story", key: "nav.story" },
+  { href: "#how", key: "nav.how" },
+  { href: "#device", key: "nav.device" },
+  { href: "#knowledge", key: "nav.knowledge" },
+  { href: "#contact", key: "nav.contact" },
+];
+---
+
+<nav class="rg-nav">
+  <a href="#top" class="rg-brand">
+    <img src="/assets/img/logo.png" alt="RiceGuard Sentinel" class="rg-brand-logo" />
+    <span class="rg-brand-text">
+      <span class="rg-brand-th"><span data-i18n="brand.th">{t("brand.th")}</span></span>
+      <span class="rg-brand-en">RiceGuard Sentinel</span>
+    </span>
+  </a>
+  <div class="rg-navlinks" id="rg-navlinks">
+    {
+      navLinks.map((link) => (
+        <a href={link.href} class="rg-navlink" data-i18n={link.key}>
+          {t(link.key)}
+        </a>
+      ))
+    }
+  </div>
+  <div class="rg-nav-right">
+    <div class="rg-langswitch" role="group" aria-label="Language">
+      <button type="button" class="rg-lang-btn is-active" data-lang="th">ไทย</button>
+      <button type="button" class="rg-lang-btn" data-lang="en">EN</button>
+      <button type="button" class="rg-lang-btn" data-lang="zh">中文</button>
+    </div>
+    <button
+      type="button"
+      class="rg-burger"
+      id="rg-burger"
+      aria-label="เปิดเมนู"
+      aria-expanded="false"
+      aria-controls="rg-mobile-menu"
+    >
+      <Icon name="menu" size={22} class="rg-burger-open" />
+      <Icon name="x" size={22} class="rg-burger-close" />
+    </button>
+  </div>
+</nav>

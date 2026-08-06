@@ -1,0 +1,66 @@
+---
+import SectionHeader from "../SectionHeader.astro";
+import Icon from "../Icon.astro";
+import { t } from "../../i18n/ui";
+
+const steps = [
+  {
+    step: "01 · Field",
+    icon: "radio",
+    key: "how.step0.th",
+    blurb: "Sensors + images, timestamped and pre-filtered right on the device.",
+  },
+  {
+    step: "02 · Edge",
+    icon: "cpu",
+    key: "how.step1.th",
+    blurb: "Urgent decisions — pest and flood alerts — happen instantly, no cloud needed.",
+  },
+  {
+    step: "03 · Cloud",
+    icon: "cloud",
+    key: "how.step2.th",
+    blurb: "Deep analysis fuses sensor and image data and retrains the models.",
+  },
+  {
+    step: "04 · Farmer",
+    icon: "smartphone",
+    key: "how.step3.th",
+    blurb: "Human-readable insights and alerts via app, SMS, and dashboard.",
+  },
+];
+---
+
+<section id="how" class="rg-section">
+  <div class="rg-container">
+    <SectionHeader
+      num="02"
+      labelKey="how.label"
+      labelEn="The 4-Layer Data Pipeline"
+      h2Key="how.h2"
+      capKey="cap.how"
+    />
+    <div class="rg-pipeline-grid">
+      {
+        steps.map((s, i) => (
+          <div class="card rg-pipeline-card" data-reveal data-reveal-delay={String(i)}>
+            <span class="rg-pipeline-step">{s.step}</span>
+            <div class="rg-pipeline-icon">
+              <Icon name={s.icon} size={22} class="rg-pipeline-svg" />
+            </div>
+            <h3 class="rg-h4">
+              <span data-i18n={s.key}>{t(s.key)}</span>
+            </h3>
+            <p class="rg-pipeline-blurb">{s.blurb}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .rg-pipeline-icon :global(.rg-pipeline-svg) {
+    color: #5a7326;
+  }
+</style>

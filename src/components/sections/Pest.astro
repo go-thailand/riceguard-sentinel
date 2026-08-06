@@ -1,0 +1,84 @@
+---
+import SectionHeader from "../SectionHeader.astro";
+import Icon from "../Icon.astro";
+import { t } from "../../i18n/ui";
+
+const tools = [
+  { icon: "scan-search", key: "pest.tool0.th", en: "Image detection · 7,000-pest dataset" },
+  { icon: "audio-lines", key: "pest.tool1.th", en: "AI-tuned ultrasonic emitter" },
+  { icon: "bug", key: "pest.tool2.th", en: "Smart pheromone trap + counter" },
+  { icon: "bird", key: "pest.tool3.th", en: "AI predator bird-calls" },
+];
+
+const substats = [
+  { value: "120+", labelKey: "pest.substat0.label" },
+  { value: "94%", labelKey: "pest.substat1.label" },
+  { valueKey: "pest.substat2.value", labelKey: "pest.substat2.label" },
+];
+---
+
+<section id="pest" class="rg-section rg-bg-white">
+  <div class="rg-container">
+    <SectionHeader
+      num="05"
+      labelKey="pest.label"
+      labelEn="Smart Pest Management"
+      h2Key="pest.h2"
+      capKey="cap.pest"
+    />
+    <p class="rg-lead" data-reveal>
+      <span data-i18n="pest.lead">{t("pest.lead")}</span> — right pest, right dose, right time.
+    </p>
+    <div class="rg-pest-grid">
+      {
+        tools.map((tool, i) => (
+          <div class="card rg-pest-card" data-reveal data-reveal-delay={String(i)}>
+            <div class="rg-pest-icon">
+              <Icon name={tool.icon} size={22} class="rg-pest-svg" />
+            </div>
+            <h3 class="rg-h4">
+              <span data-i18n={tool.key}>{t(tool.key)}</span>
+            </h3>
+            <p class="rg-pest-en">{tool.en}</p>
+          </div>
+        ))
+      }
+    </div>
+
+    <!-- 7,000-image dataset counter -->
+    <div class="rg-dataset" data-reveal>
+      <div class="rg-dataset-counter">
+        <span class="rg-dataset-count">7,000+</span>
+        <span class="rg-dataset-count-label" data-i18n="pest.dataset.label">{t("pest.dataset.label")}</span>
+        <div class="rg-dataset-substats">
+          {
+            substats.map((s) => (
+              <div class="rg-dataset-substat">
+                <b>{s.valueKey ? <span data-i18n={s.valueKey}>{t(s.valueKey)}</span> : s.value}</b>
+                <span data-i18n={s.labelKey}>{t(s.labelKey)}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+      <div class="rg-dataset-thumbs">
+        {Array.from({ length: 18 }).map(() => (
+          <div class="rg-dataset-thumb"><Icon name="bug" size={16} /></div>
+        ))}
+      </div>
+    </div>
+
+    <div class="rg-note-strip" data-reveal>
+      <Icon name="shield-check" size={22} class="rg-note-svg" />
+      <p>
+        <span data-i18n="pest.notestrip">{t("pest.notestrip")}</span> — an integrated
+        prevention system, not just detection.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .rg-pest-icon :global(.rg-pest-svg) { color: #5a7326; }
+  .rg-note-strip :global(.rg-note-svg) { color: #5a7326; flex: 0 0 auto; }
+</style>

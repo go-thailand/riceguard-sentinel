@@ -1,0 +1,115 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Navbar from "../../components/Navbar.astro";
+import MobileMenu from "../../components/MobileMenu.astro";
+import Footer from "../../components/Footer.astro";
+import Icon from "../../components/Icon.astro";
+import { provinces } from "../../data/provinces";
+import { t } from "../../i18n/ui";
+
+export function getStaticPaths() {
+  return provinces.map((province) => ({
+    params: { slug: province.slug },
+    props: { province },
+  }));
+}
+
+const { province } = Astro.props;
+const nameKey = `province.${province.slug}.name`;
+const noteKey = `province.${province.slug}.note`;
+const regionKey = `region.${province.region}`;
+
+// Representative field readings for the detail page (demo values).
+const fieldStats = [
+  { key: "province.stat.area", value: "36", unitKey: "unit.rai" },
+  { key: "province.stat.ph", value: "5.6" },
+  { key: "province.stat.moisture", value: "68%" },
+  {
+    key: "province.stat.station",
+    value: province.status === "live" ? t("province.station.online") : "—",
+    i18nValue: province.status === "live" ? "province.station.online" : null,
+  },
+];
+---
+
+<Layout title={`${t(nameKey)} · ${t("province.pageLabel")} — RiceGuard Sentinel`} description={t(noteKey)}>
+  <Navbar />
+  <MobileMenu />
+
+  <main class="rg-section rg-province-page">
+    <div class="rg-container">
+      <a href="/#expansion" class="rg-back-link">
+        <Icon name="arrow-right" size={16} class="rg-back-icon" />
+        <span data-i18n="province.back">{t("province.back")}</span>
+      </a>
+
+      <div class="rg-secnum" style="color:#8FB43A; margin-top:18px;">
+        <span class="rg-secnum-n" data-i18n="province.pageLabel">{t("province.pageLabel")}</span>
+        <span class="rg-secnum-line" style="background:#8FB43A;"></span>
+        <span class="rg-secnum-label">
+          <span data-i18n={regionKey}>{t(regionKey)}</span> · Field Dashboard
+        </span>
+      </div>
+
+      <div class="rg-province-hero">
+        <div>
+          <h1 class="rg-h2"><span data-i18n={nameKey}>{t(nameKey)}</span></h1>
+          <p class="rg-cap" style="color:#A67C00;">{t(nameKey, "en")}</p>
+          <p class="rg-lead"><span data-i18n={noteKey}>{t(noteKey)}</span></p>
+          <span class={`rg-status rg-status-${province.status}`} data-i18n={`status.${province.status}`}>
+            {t(`status.${province.status}`)}
+          </span>
+          <p class="rg-province-statusdesc">
+            <span data-i18n={`status.${province.status}.desc`}>{t(`status.${province.status}.desc`)}</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="rg-province-stats">
+        {
+          fieldStats.map((s) => (
+            <div class="rg-trial-stat">
+              <div class="rg-trial-value">
+                {s.i18nValue ? <span data-i18n={s.i18nValue}>{s.value}</span> : s.value}
+                {s.unitKey ? (
+                  <>
+                    {" "}
+                    <span data-i18n={s.unitKey}>{t(s.unitKey)}</span>
+                  </>
+                ) : null}
+              </div>
+              <div class="rg-trial-th">
+                <span data-i18n={s.key}>{t(s.key)}</span>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+
+      <p class="rg-lead" style="margin-top:28px;">
+        <span data-i18n="province.coords">{t("province.coords")}</span>: {province.lat.toFixed(2)}°N, {
+          province.lng.toFixed(2)
+        }°E — <span data-i18n="province.note.realtime">{t("province.note.realtime")}</span>
+      </p>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  .rg-province-page { padding-top: 40px; }
+  .rg-back-link {
+    display: inline-flex; align-items: center; gap: 7px;
+    font-weight: 600; font-size: 13px; color: var(--rg-green);
+  }
+  .rg-back-link :global(.rg-back-icon) { transform: rotate(180deg); }
+  .rg-province-hero { margin-top: 12px; }
+  .rg-province-statusdesc { margin-top: 10px; font-size: 13px; color: #6f6b64; max-width: 560px; }
+  .rg-province-stats {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 26px;
+  }
+  @media (min-width: 700px) {
+    .rg-province-stats { grid-template-columns: repeat(4, 1fr); }
+  }
+</style>

@@ -132,9 +132,6 @@
 .rg-lead { max-width: 680px; margin: 16px 0 0; font-size: 15px; line-height: 1.6; color: #3c3a38; }
 .rg-lead-light { color: rgba(245,234,216,0.82); }
 .rg-lead-onlgreen { color: rgba(255,255,255,0.92); max-width: 680px; }
-.rg-placeholder-note { margin-top: 14px; font-size: 12px; color: #9a968f; }
-.rg-placeholder-note-light { color: rgba(245,234,216,0.55); }
-.rg-placeholder-note-ongreen { color: rgba(255,255,255,0.7); }
 
 @media (min-width: 860px) {
   .rg-h2 { font-size: clamp(28px, 3.5vw, 44px); }

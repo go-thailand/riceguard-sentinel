@@ -1,0 +1,138 @@
+---
+import Icon from "../Icon.astro";
+import MapLegend from "../MapLegend.astro";
+import ProvinceModal from "../ProvinceModal.astro";
+import ProvinceData from "../ProvinceData.astro";
+import { provinces } from "../../data/provinces";
+import { t } from "../../i18n/ui";
+---
+
+<section id="expansion" class="rg-section">
+  <div class="rg-container rg-expansion-grid">
+    <!-- Small interactive map (drawn client-side by RGMap into this <svg>).
+         Clicking the map background (or the corner button) opens the Map Modal;
+         clicking a province dot opens the Province Modal (stopPropagation keeps
+         the two apart). -->
+    <div class="rg-map-wrap" data-reveal>
+      <button type="button" class="rg-map-expand" data-modal-open="modal-map" aria-label="ขยายดูแผนที่">
+        <Icon name="maximize-2" size={15} /> <span data-i18n="map.expand">{t("map.expand")}</span>
+      </button>
+      <svg id="rg-map-home" class="rg-map-svg" aria-label="แผนที่พื้นที่วิจัย 12 จังหวัด 4 ภูมิภาค"
+      ></svg>
+      <MapLegend />
+    </div>
+
+    <div data-reveal data-reveal-delay="1">
+      <div class="rg-secnum" style="color:#8FB43A;">
+        <span class="rg-secnum-n">09</span>
+        <span class="rg-secnum-line" style="background:#8FB43A;"></span>
+        <span class="rg-secnum-label">
+          <span data-i18n="expansion.label">{t("expansion.label")}</span> · 4-Region Expansion
+        </span>
+      </div>
+      <h2 class="rg-h2"><span data-i18n="expansion.h2">{t("expansion.h2")}</span></h2>
+      <p class="rg-cap" style="color:#A67C00;" data-i18n="cap.expansion">{t("cap.expansion")}</p>
+      <p class="rg-lead" style="max-width:520px;">
+        <span data-i18n="expansion.lead">{t("expansion.lead")}</span> —
+        <span data-i18n="map.hint">{t("map.hint")}</span>
+      </p>
+      <div class="rg-province-grid">
+        {
+          provinces.map((p) => (
+            <div class="rg-province">
+              <div>
+                <div class="rg-province-name">
+                  <span data-i18n={`province.${p.slug}.name`}>{t(`province.${p.slug}.name`)}</span>
+                </div>
+                <div class="rg-province-region">
+                  <span data-i18n={`region.${p.region}`}>{t(`region.${p.region}`)}</span>
+                </div>
+              </div>
+              <span class={`rg-status rg-status-${p.status}`} data-i18n={`status.${p.status}`}>
+                {t(`status.${p.status}`)}
+              </span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Province Modal (feature kept) -->
+  <ProvinceModal />
+
+  <!-- Map Modal (new) — bigger, view-only map + fullscreen link to /research-map -->
+  <div
+    class="rg-modal"
+    id="modal-map"
+    role="dialog"
+    aria-modal="true"
+    aria-hidden="true"
+    aria-label="แผนที่พื้นที่วิจัย 12 จังหวัด"
+  >
+    <div class="rg-modal-panel rg-modal-panel-map">
+      <div class="rg-modal-head">
+        <div>
+          <div class="rg-modal-eyebrow" data-i18n="map.modal.eyebrow">{t("map.modal.eyebrow")}</div>
+          <h3 class="rg-modal-title" data-i18n="map.modal.title">{t("map.modal.title")}</h3>
+        </div>
+        <div class="rg-modal-head-actions">
+          <a class="rg-modal-fs" href="/research-map" aria-label="ขยายเต็มจอ" title="ขยายเต็มจอ">
+            <Icon name="maximize" size={18} />
+          </a>
+          <button type="button" class="rg-modal-close" data-modal-close aria-label="ปิด">
+            <Icon name="x" size={18} />
+          </button>
+        </div>
+      </div>
+      <div class="rg-map-modal-body">
+        <svg id="rg-map-modal" class="rg-map-svg" aria-label="แผนที่พื้นที่วิจัย (มุมมองขยาย)"></svg>
+        <MapLegend />
+      </div>
+    </div>
+  </div>
+
+  <ProvinceData />
+
+  <!-- Astro has no bundler step for is:inline, so d3 + topojson load from CDN,
+       then the shared renderer (/scripts/rg-map.js), then this init. -->
+  <script is:inline src="https://unpkg.com/d3@7/dist/d3.min.js"></script>
+  <script is:inline src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
+  <script is:inline src="/scripts/rg-map.js"></script>
+  <script is:inline>
+    (function () {
+      if (typeof RGMap === "undefined") return;
+      var el = document.getElementById("rg-province-data");
+      if (!el) return;
+      var data = JSON.parse(el.textContent);
+      var expandBtn = document.querySelector('[data-modal-open="modal-map"]');
+
+      // Small map — interactive (province click → Province Modal).
+      RGMap.draw({
+        svg: "#rg-map-home",
+        data: data,
+        width: 520,
+        height: 700,
+        interactive: true,
+        onProvinceClick: RGMap.openProvinceModal,
+        onReady: function (svg) {
+          svg.style("cursor", "zoom-in");
+          // Click on the map background (not a province) opens the Map Modal.
+          svg.on("click", function () {
+            if (expandBtn) expandBtn.click();
+          });
+        },
+      });
+
+      // Big map inside the Map Modal — view-only (no province clicks).
+      // Drawn now; SVG is viewBox-based so it renders fine while hidden.
+      RGMap.draw({
+        svg: "#rg-map-modal",
+        data: data,
+        width: 520,
+        height: 700,
+        interactive: false,
+      });
+    })();
+  </script>
+</section>

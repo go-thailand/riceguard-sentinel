@@ -1,0 +1,37 @@
+---
+import Icon from "./Icon.astro";
+import { t } from "../i18n/ui";
+
+// Province detail modal — hidden by default (.rg-modal { display:none }).
+// Content is filled in by RGMap.openProvinceModal() on province click.
+// Closing is handled by the shared modal wiring in src/scripts/ui.js.
+---
+
+<div
+  class="rg-modal"
+  id="modal-province"
+  role="dialog"
+  aria-modal="true"
+  aria-hidden="true"
+  aria-labelledby="rg-prov-name"
+>
+  <div class="rg-modal-panel">
+    <div class="rg-modal-head">
+      <div>
+        <div class="rg-modal-eyebrow" id="rg-prov-region">ภูมิภาค</div>
+        <h3 class="rg-modal-title" id="rg-prov-name">จังหวัด</h3>
+      </div>
+      <button type="button" class="rg-modal-close" data-modal-close aria-label="ปิด">
+        <Icon name="x" size={18} />
+      </button>
+    </div>
+    <div class="rg-modal-body">
+      <p><span class="rg-status" id="rg-prov-status">สถานะ</span></p>
+      <p id="rg-prov-desc">รายละเอียดพื้นที่วิจัย</p>
+      <a class="btn btn-primary" id="rg-prov-link" href="/province">
+        <span data-i18n="map.viewDashboard">{t("map.viewDashboard")}</span>
+        <Icon name="arrow-right" size={16} />
+      </a>
+    </div>
+  </div>
+</div>

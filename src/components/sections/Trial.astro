@@ -1,0 +1,123 @@
+---
+import SectionHeader from "../SectionHeader.astro";
+import { t } from "../../i18n/ui";
+
+const stats = [
+  { value: "pH 4.7", key: "trial.stat0.th" },
+  { value: "57%", key: "trial.stat1.th" },
+  { value: "36 ไร่", key: "trial.stat2.th" },
+];
+
+const compare = [
+  { metricKey: "trial.cmp0.metric", control: "100%", sentinel: "43%" },
+  { metricKey: "trial.cmp1.metric", controlKey: "trial.cmp1.control", sentinelKey: "trial.cmp1.sentinel" },
+  { metricKey: "trial.cmp2.metric", controlKey: "trial.cmp2.control", sentinelKey: "trial.cmp2.sentinel" },
+];
+
+// pH readings across 8 zones of the trial plot. Height maps pH 4→7 onto 0→100%.
+const phZones = [4.7, 5.1, 5.5, 6.0, 6.2, 5.8, 4.9, 6.3];
+const barHeight = (ph: number) => Math.round(((ph - 4) / 3) * 100);
+---
+
+<section id="trial" class="rg-section rg-bg-white">
+  <div class="rg-container">
+    <SectionHeader
+      num="08"
+      labelKey="trial.label"
+      labelEn="Field Trial Results"
+      h2Key="trial.h2"
+      capKey="cap.trial"
+    />
+    <div class="rg-trial-grid">
+      <div class="washed rg-trial-imgwrap" data-reveal>
+        <img
+          src="/assets/img/trial-map.webp"
+          alt="แผนที่ pH ดิน เปรียบเทียบแปลงควบคุมกับแปลง Sentinel"
+          loading="lazy"
+          width="416"
+          height="870"
+        />
+      </div>
+      <div class="rg-trial-side" data-reveal data-reveal-delay="1">
+        <p class="rg-lead" style="margin:0;">
+          <span data-i18n="trial.lead">{t("trial.lead")}</span>
+        </p>
+        <div class="rg-trial-stats">
+          {
+            stats.map((s) => (
+              <div class="rg-trial-stat">
+                <div class="rg-trial-value">{s.value}</div>
+                <div class="rg-trial-th">
+                  <span data-i18n={s.key}>{t(s.key)}</span>
+                </div>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Control vs Sentinel comparison + pH distribution chart -->
+    <div class="rg-trial-detail" data-reveal>
+      <div class="rg-trial-detail-col">
+        <h3 class="rg-h4" data-i18n="trial.compare.title">{t("trial.compare.title")}</h3>
+        <table class="rg-compare-table">
+          <thead>
+            <tr>
+              <th data-i18n="trial.compare.metric">{t("trial.compare.metric")}</th>
+              <th data-i18n="trial.compare.control">{t("trial.compare.control")}</th>
+              <th class="rg-col-sentinel" data-i18n="trial.compare.sentinel">{t("trial.compare.sentinel")}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              compare.map((r) => (
+                <tr>
+                  <td data-i18n={r.metricKey}>{t(r.metricKey)}</td>
+                  <td>{r.controlKey ? <span data-i18n={r.controlKey}>{t(r.controlKey)}</span> : r.control}</td>
+                  <td class="rg-col-sentinel">
+                    {r.sentinelKey ? <span data-i18n={r.sentinelKey}>{t(r.sentinelKey)}</span> : r.sentinel}
+                  </td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <div class="rg-trial-detail-col">
+        <h3 class="rg-h4" data-i18n="trial.ph.title">{t("trial.ph.title")}</h3>
+        <div class="rg-phchart">
+          <div class="rg-phchart-bars">
+            {
+              phZones.map((ph, i) => (
+                <div class="rg-phbar">
+                  <span>{ph.toFixed(1)}</span>
+                  <div
+                    class={`rg-phbar-fill${ph < 5.5 ? " is-acid" : ""}`}
+                    style={`height:${barHeight(ph)}%`}
+                  />
+                  <span>Z{i + 1}</span>
+                </div>
+              ))
+            }
+          </div>
+          <p class="rg-phchart-note" data-i18n="trial.ph.note">{t("trial.ph.note")}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .rg-trial-detail {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+  @media (min-width: 800px) {
+    .rg-trial-detail {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,45 @@
+---
+import { t } from "../i18n/ui";
+
+// Shared section header: the numbered eyebrow (rg-secnum) + H2 + English caption.
+// Reused by all 11 content sections. Label/H2 copy comes from the i18n dict
+// (via labelKey/h2Key); the English caption stays as a static gloss.
+interface Props {
+  num: string;
+  color?: string;
+  labelKey: string;
+  labelEn: string;
+  labelColor?: string;
+  h2Key: string;
+  h2Class?: string;
+  cap?: string;
+  capKey?: string;
+  capColor?: string;
+  capStyle?: string;
+}
+const {
+  num,
+  color = "#8FB43A",
+  labelKey,
+  labelEn,
+  labelColor,
+  h2Key,
+  h2Class = "rg-h2",
+  cap,
+  capKey,
+  capColor = "#A67C00",
+  capStyle = "",
+} = Astro.props;
+---
+
+<div class="rg-secnum" style={`color:${color};`}>
+  <span class="rg-secnum-n">{num}</span>
+  <span class="rg-secnum-line" style={`background:${color};`}></span>
+  <span class="rg-secnum-label" style={labelColor ? `color:${labelColor};` : undefined}>
+    <span data-i18n={labelKey}>{t(labelKey)}</span> · {labelEn}
+  </span>
+</div>
+<h2 class={h2Class}><span data-i18n={h2Key}>{t(h2Key)}</span></h2>
+<p class="rg-cap" style={`color:${capColor};${capStyle}`}>
+  {capKey ? <span data-i18n={capKey}>{t(capKey)}</span> : cap}
+</p>

@@ -1,0 +1,66 @@
+---
+import SectionHeader from "../SectionHeader.astro";
+import Icon from "../Icon.astro";
+import { t } from "../../i18n/ui";
+
+const layers = [
+  { icon: "radio", key: "system.layer0.title", en: "Edge Acquisition" },
+  { icon: "cpu", key: "system.layer1.title", en: "Inference" },
+  { icon: "globe", key: "system.layer2.title", en: "Transport · LoRa" },
+  { icon: "cloud", key: "system.layer3.title", en: "Cloud" },
+  { icon: "git-merge", key: "system.layer4.title", en: "Fusion" },
+  { icon: "database", key: "system.layer5.title", en: "Knowledge" },
+  { icon: "smartphone", key: "system.layer6.title", en: "Presentation" },
+];
+---
+
+<section id="system-overview" class="rg-section rg-bg-cream">
+  <div class="rg-container">
+    <SectionHeader
+      num="10"
+      labelKey="system.label"
+      labelEn="AI System Overview"
+      h2Key="system.h2"
+      capKey="cap.system"
+    />
+    <p class="rg-lead" data-reveal>
+      <span data-i18n="system.lead">{t("system.lead")}</span> — Edge Acquisition → Inference → Transport
+      → Cloud → Fusion → Knowledge → Presentation.
+    </p>
+
+    <!-- Interactive 7-layer strip (horizontal scroll on mobile) -->
+    <div class="rg-layers" data-reveal>
+      {
+        layers.map((l, i) => (
+          <div class="rg-layer">
+            <div class="rg-layer-num">{String(i + 1).padStart(2, "0")}</div>
+            <div class="rg-layer-icon">
+              <Icon name={l.icon} size={20} class="rg-layer-svg" />
+            </div>
+            <div class="rg-layer-title" data-i18n={l.key}>{t(l.key)}</div>
+            <p class="rg-layer-en">{l.en}</p>
+          </div>
+        ))
+      }
+    </div>
+    <p class="rg-scroll-hint">
+      <Icon name="move-horizontal" size={14} /> <span data-i18n="system.scrollhint">{t("system.scrollhint")}</span>
+    </p>
+
+    <div class="rg-diagram-wrap" data-reveal>
+      <img
+        src="/assets/img/ai-system-diagram.webp"
+        alt="ภาพรวมระบบ AI ของ RiceGuard"
+        loading="lazy"
+        width="1800"
+        height="665"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .rg-layer-icon :global(.rg-layer-svg) {
+    color: #5a7326;
+  }
+</style>
