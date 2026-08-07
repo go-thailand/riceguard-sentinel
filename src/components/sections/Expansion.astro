@@ -42,19 +42,19 @@ const base = localePrefix(getLang(Astro)); // "" for th, "/en", "/zh"
       <div class="rg-province-grid">
         {
           provinces.map((p) => (
-            <div class="rg-province">
+            <a class="rg-province" href={`${base}/province/${p.slug}`}>
               <div>
                 <div class="rg-province-name">
-                  <span data-i18n={`province.${p.slug}.name`}>{t(`province.${p.slug}.name`)}</span>
+                  <span>{t(`province.${p.slug}.name`)}</span>
                 </div>
                 <div class="rg-province-region">
-                  <span data-i18n={`region.${p.region}`}>{t(`region.${p.region}`)}</span>
+                  <span>{t(`region.${p.region}`)}</span>
                 </div>
               </div>
-              <span class={`rg-status rg-status-${p.status}`} data-i18n={`status.${p.status}`}>
+              <span class={`rg-status rg-status-${p.status}`}>
                 {t(`status.${p.status}`)}
               </span>
-            </div>
+            </a>
           ))
         }
       </div>
