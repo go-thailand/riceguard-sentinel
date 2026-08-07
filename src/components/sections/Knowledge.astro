@@ -1,6 +1,8 @@
 ---
 import Icon from "../Icon.astro";
-import { t } from "../../i18n/ui";
+import { useTranslate } from "../../i18n/ui";
+
+const t = useTranslate(Astro);
 
 const tiers = [
   { level: "Field", key: "knowledge.tier0.th", en: "Plot-level insights — Songkhla, Chiang Rai, Amnat Charoen." },

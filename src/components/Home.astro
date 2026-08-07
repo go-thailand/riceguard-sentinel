@@ -1,0 +1,41 @@
+---
+// Shared homepage body. Rendered by the per-language routes:
+//   src/pages/index.astro (th) · src/pages/en/index.astro · src/pages/zh/index.astro
+// Language is resolved from the URL by each child component (Astro.currentLocale),
+// so the same composition renders fully-translated HTML at each URL.
+import Layout from "../layouts/Layout.astro";
+import Navbar from "./Navbar.astro";
+import MobileMenu from "./MobileMenu.astro";
+import Hero from "./Hero.astro";
+import Footer from "./Footer.astro";
+
+import Story from "./sections/Story.astro";
+import How from "./sections/How.astro";
+import Device from "./sections/Device.astro";
+import Sensors from "./sections/Sensors.astro";
+import Pest from "./sections/Pest.astro";
+import Knowledge from "./sections/Knowledge.astro";
+import Green from "./sections/Green.astro";
+import Trial from "./sections/Trial.astro";
+import Expansion from "./sections/Expansion.astro";
+import System from "./sections/System.astro";
+import Contact from "./sections/Contact.astro";
+---
+
+<Layout>
+  <Navbar />
+  <MobileMenu />
+  <Hero />
+  <Story />
+  <How />
+  <Device />
+  <Sensors />
+  <Pest />
+  <Knowledge />
+  <Green />
+  <Trial />
+  <Expansion />
+  <System />
+  <Contact />
+  <Footer />
+</Layout>

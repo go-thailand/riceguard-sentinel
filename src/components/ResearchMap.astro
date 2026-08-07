@@ -1,0 +1,58 @@
+---
+// Shared full-screen research-map body. Rendered by the per-language routes:
+//   src/pages/research-map.astro (th) · src/pages/en/… · src/pages/zh/…
+import Layout from "../layouts/Layout.astro";
+import ProvinceModal from "./ProvinceModal.astro";
+import ProvinceData from "./ProvinceData.astro";
+import MapLegend from "./MapLegend.astro";
+import Icon from "./Icon.astro";
+import { useTranslate, getLang, localePrefix } from "../i18n/ui";
+
+const t = useTranslate(Astro);
+const base = localePrefix(getLang(Astro)); // "" for th, "/en", "/zh"
+---
+
+<Layout title={`${t("map.modal.title")} — RiceGuard Sentinel`} description={t("map.modal.title")}>
+  <div class="rg-map-full">
+    <a href={`${base}/#expansion`} class="rg-map-full-back">
+      <Icon name="arrow-right" size={16} /> <span>{t("map.back")}</span>
+    </a>
+    <svg id="rg-map-full" class="rg-map-svg" aria-label="แผนที่พื้นที่วิจัย 12 จังหวัด 4 ภูมิภาค เต็มจอ"
+    ></svg>
+    <MapLegend />
+  </div>
+
+  <ProvinceModal />
+  <ProvinceData />
+
+  <script is:inline src="https://unpkg.com/d3@7/dist/d3.min.js"></script>
+  <script is:inline src="https://unpkg.com/topojson-client@3/dist/topojson-client.min.js"></script>
+  <script is:inline src="/scripts/rg-map.js"></script>
+  <script is:inline>
+    (function () {
+      if (typeof RGMap === "undefined") return;
+      var el = document.getElementById("rg-province-data");
+      if (!el) return;
+      var data = JSON.parse(el.textContent);
+
+      function render() {
+        RGMap.draw({
+          svg: "#rg-map-full",
+          data: data,
+          width: window.innerWidth,
+          height: window.innerHeight,
+          pad: Math.max(48, Math.round(window.innerWidth * 0.06)),
+          interactive: true,
+          onProvinceClick: RGMap.openProvinceModal,
+        });
+      }
+
+      render();
+      var t;
+      window.addEventListener("resize", function () {
+        clearTimeout(t);
+        t = setTimeout(render, 200);
+      });
+    })();
+  </script>
+</Layout>

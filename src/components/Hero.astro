@@ -1,6 +1,8 @@
 ---
 import Icon from "./Icon.astro";
-import { t } from "../i18n/ui";
+import { useTranslate } from "../i18n/ui";
+
+const t = useTranslate(Astro);
 
 const stats = [
   { value: "20–30%", key: "hero.stat0.th", en: "Water saved" },

@@ -1,5 +1,5 @@
 ---
-import { t } from "../i18n/ui";
+import { useTranslate } from "../i18n/ui";
 
 // Shared section header: the numbered eyebrow (rg-secnum) + H2 + English caption.
 // Reused by all 11 content sections. Label/H2 copy comes from the i18n dict
@@ -30,6 +30,7 @@ const {
   capColor = "#A67C00",
   capStyle = "",
 } = Astro.props;
+const t = useTranslate(Astro);
 ---
 
 <div class="rg-secnum" style={`color:${color};`}>

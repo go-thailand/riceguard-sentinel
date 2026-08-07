@@ -1,5 +1,7 @@
 ---
-import { t } from "../i18n/ui";
+import { useTranslate } from "../i18n/ui";
+
+const t = useTranslate(Astro);
 
 // Legend overlay for the province map — positioned bottom-left by CSS.
 // Reused by the home map, the Map Modal, and the /research-map page.

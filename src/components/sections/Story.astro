@@ -2,7 +2,9 @@
 import SectionHeader from "../SectionHeader.astro";
 import Icon from "../Icon.astro";
 import Modal from "../Modal.astro";
-import { t } from "../../i18n/ui";
+import { useTranslate } from "../../i18n/ui";
+
+const t = useTranslate(Astro);
 
 // Gen 3 → Gen 4: evidence-driven redesign rows (i18n keys)
 const beforeAfter = [

@@ -25,12 +25,16 @@
   var _queue = null;
   var _lastProvince = null; // for refilling the modal on language change
 
+  // Language now comes from the page URL: Astro renders <html lang="th|en|zh">
+  // per locale route. (Switching language is a full navigation, not a JS swap.)
   function currentLang() {
-    try {
-      return localStorage.getItem("rg-lang") || "th";
-    } catch (e) {
-      return "th";
-    }
+    var l = (document.documentElement.getAttribute("lang") || "th").toLowerCase();
+    return l === "en" || l === "zh" ? l : "th";
+  }
+
+  // URL prefix for the active language ("" for th, "/en", "/zh").
+  function langPrefix(lang) {
+    return lang === "th" ? "" : "/" + lang;
   }
 
   // Region marker colour keyed off its Thai label (stable across languages).
@@ -256,7 +260,9 @@
     statusEl.textContent = pick(p.statusLabel);
     statusEl.className = "rg-status rg-status-" + p.status;
     modal.querySelector("#rg-prov-desc").textContent = pick(p.note);
-    modal.querySelector("#rg-prov-link").setAttribute("href", "/province/" + p.slug);
+    modal
+      .querySelector("#rg-prov-link")
+      .setAttribute("href", langPrefix(lang) + "/province/" + p.slug);
   }
 
   // Keep an open province modal in sync when the language switches.

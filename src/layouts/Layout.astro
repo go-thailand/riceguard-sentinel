@@ -2,25 +2,44 @@
 import "../styles/style.css";
 import "../styles/layout.css";
 import "../styles/components.css";
+import { getLang, localeUrls, t } from "../i18n/ui";
 
 interface Props {
   title?: string;
   description?: string;
 }
 
+const lang = getLang(Astro);
+
+// Localised page defaults (used when a page doesn't pass its own title/desc).
+const SITE_TITLE = {
+  th: "RiceGuard Sentinel · ไรซ์การ์ด เซ็นทินัล — เกษตรอัจฉริยะเพื่อชาวนาไทยด้วย AI",
+  en: "RiceGuard Sentinel — Smart farming for Thai rice growers with AI",
+  zh: "RiceGuard Sentinel · 水稻卫士哨兵 — 以 AI 驱动的泰国智慧稻作",
+} as const;
+
 const {
-  title = "RiceGuard Sentinel · ไรซ์การ์ด เซ็นทินัล — เกษตรอัจฉริยะเพื่อชาวนาไทยด้วย AI",
-  description = "RiceGuard Sentinel: งานวิจัยและพัฒนา IoT + AI เพื่อช่วยชาวนาไทยใช้น้ำ ปุ๋ย และดูแลศัตรูพืชอย่างแม่นยำ โดย Mobile AI Company",
+  title = SITE_TITLE[lang],
+  description = t("hero.desc", lang),
 } = Astro.props;
+
+// Canonical + hreflang alternates for the current page in every language.
+const alternates = localeUrls(Astro);
+const origin = Astro.site?.origin ?? "";
+const canonical = origin + (alternates.find((a) => a.active)?.href ?? Astro.url.pathname);
+const xDefault = origin + (alternates.find((a) => a.lang === "th")?.href ?? "/");
 ---
 
 <!DOCTYPE html>
-<html lang="th">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={origin + a.href} />)}
+    <link rel="alternate" hreflang="x-default" href={xDefault} />
     <link rel="icon" type="image/png" href="/RiceGuard_Sentinel_Logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -35,7 +54,6 @@ const {
     </div>
 
     <script>
-      import "../scripts/i18n.js";
       import "../scripts/ui.js";
     </script>
   </body>

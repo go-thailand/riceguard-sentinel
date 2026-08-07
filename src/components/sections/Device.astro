@@ -1,7 +1,9 @@
 ---
 import Icon from "../Icon.astro";
 import Modal from "../Modal.astro";
-import { t } from "../../i18n/ui";
+import { useTranslate } from "../../i18n/ui";
+
+const t = useTranslate(Astro);
 
 const specs = [
   { icon: "ruler", value: "4 m", key: "device.spec0.th" },

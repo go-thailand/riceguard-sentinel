@@ -1,7 +1,9 @@
 ---
 import SectionHeader from "../SectionHeader.astro";
 import Icon from "../Icon.astro";
-import { t } from "../../i18n/ui";
+import { useTranslate } from "../../i18n/ui";
+
+const t = useTranslate(Astro);
 
 const tools = [
   { icon: "scan-search", key: "pest.tool0.th", en: "Image detection · 7,000-pest dataset" },

@@ -1,6 +1,8 @@
 ---
 import Icon from "./Icon.astro";
-import { t } from "../i18n/ui";
+import { useTranslate } from "../i18n/ui";
+
+const t = useTranslate(Astro);
 
 // Province detail modal — hidden by default (.rg-modal { display:none }).
 // Content is filled in by RGMap.openProvinceModal() on province click.
