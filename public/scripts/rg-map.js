@@ -3,8 +3,9 @@
    Draws the same Thailand + neighbours map in three places (home small map,
    Map Modal big map, /research-map full-screen) from one code path.
 
-   Language-aware: province/region text is stored per language in the JSON data
-   island; labels re-render on the "rg:langchange" event fired by i18n.js.
+   Language comes from the page URL — Astro renders <html lang="th|en|zh"> per
+   locale route, and currentLang() reads that. There is NO localStorage and no
+   client-side text swap: switching language is a full navigation to a new URL.
 
    window.RGMap.draw({ svg, data, width, height, pad, interactive, onProvinceClick, onReady })
      data = { provinces:[{slug,status,lat,lng,name:{th,en,zh},note,region,statusLabel}], regions:[...] }
@@ -220,20 +221,6 @@
           return d.name[lang] || d.name.th;
         });
 
-      // Re-label this map whenever the language changes
-      document.addEventListener("rg:langchange", function (e) {
-        var l = (e.detail && e.detail.lang) || currentLang();
-        svg.selectAll("text.rg-map-region").text(function (d) {
-          return d.label[l] || d.label.th;
-        });
-        svg.selectAll("g.rg-map-pin").attr("aria-label", function (d) {
-          return d.name[l] || d.name.th;
-        });
-        svg.selectAll("text.rg-map-label").text(function (d) {
-          return d.name[l] || d.name.th;
-        });
-      });
-
       if (typeof opts.onReady === "function") opts.onReady(svg, projection);
     });
   }
@@ -264,13 +251,6 @@
       .querySelector("#rg-prov-link")
       .setAttribute("href", langPrefix(lang) + "/province/" + p.slug);
   }
-
-  // Keep an open province modal in sync when the language switches.
-  document.addEventListener("rg:langchange", function (e) {
-    var modal = document.getElementById("modal-province");
-    if (!modal || !modal.classList.contains("is-open") || !_lastProvince) return;
-    fillProvinceModal(modal, _lastProvince, (e.detail && e.detail.lang) || currentLang());
-  });
 
   window.RGMap = {
     load: load,
