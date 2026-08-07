@@ -1,5 +1,8 @@
 ---
-import { t } from "../i18n/ui";
+import { useTranslate, localeUrls } from "../i18n/ui";
+
+const t = useTranslate(Astro);
+const langLinks = localeUrls(Astro);
 
 const navLinks = [
   { href: "#story", key: "nav.story" },
@@ -19,9 +22,19 @@ const navLinks = [
     ))
   }
   <div class="rg-langswitch rg-langswitch-mobile" role="group" aria-label="Language">
-    <button type="button" class="rg-lang-btn is-active" data-lang="th">ไทย</button>
-    <button type="button" class="rg-lang-btn" data-lang="en">EN</button>
-    <button type="button" class="rg-lang-btn" data-lang="zh">中文</button>
+    {
+      langLinks.map((l) => (
+        <a
+          href={l.href}
+          hreflang={l.lang}
+          lang={l.lang}
+          class={`rg-lang-btn${l.active ? " is-active" : ""}`}
+          aria-current={l.active ? "true" : undefined}
+        >
+          {l.label}
+        </a>
+      ))
+    }
   </div>
 </div>
 <div class="rg-mobile-backdrop" id="rg-mobile-backdrop"></div>

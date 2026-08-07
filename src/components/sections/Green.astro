@@ -1,5 +1,7 @@
 ---
-import { t } from "../../i18n/ui";
+import { useTranslate } from "../../i18n/ui";
+
+const t = useTranslate(Astro);
 
 const stats = [
   { value: "0", key: "green.stat0.th" },

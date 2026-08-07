@@ -37,6 +37,7 @@
 
 .rg-langswitch { display: flex; gap: 4px; align-items: center; background: rgba(90,115,38,0.08); padding: 4px; border-radius: 999px; }
 .rg-lang-btn {
+  display: inline-flex; align-items: center; text-decoration: none;
   border: none; cursor: pointer; font-weight: 700; font-size: 12px; padding: 6px 12px;
   border-radius: 999px; background: transparent; color: var(--rg-green); font-family: var(--font-body);
 }

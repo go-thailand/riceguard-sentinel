@@ -1,7 +1,9 @@
 // RiceGuard Sentinel — i18n dictionary (single source of truth).
 // TH = original copy. EN/ZH extracted from the team's translated builds
-// ("RiceGuard Sentinel Website (EN/ZH).html"). Used at build time by <T> and
-// at runtime by the language switcher (src/scripts/i18n.js).
+// ("RiceGuard Sentinel Website (EN/ZH).html"). Resolved at build time per URL
+// locale (Astro.currentLocale) via the helpers below — each language gets its
+// own server-rendered page (/, /en/, /zh/). The map labels (rg-map.js) read
+// the same copy from a JSON island (ProvinceData.astro).
 export const languages = ["th", "en", "zh"] as const;
 export type Lang = (typeof languages)[number];
 
@@ -769,3 +771,54 @@ export function t(key: string, lang: Lang = "th"): string {
   const entry = (ui as Record<string, Record<Lang, string>>)[key];
   return entry ? entry[lang] ?? entry.th : key;
 }
+
+// ============================================================================
+// i18n ROUTING HELPERS (URL-per-language — RIC-44x)
+// The page's language now comes from the URL (Astro.currentLocale), not from
+// localStorage. These helpers let .astro components render in the active
+// language server-side and build the language-switcher links.
+// ============================================================================
+
+// Resolve the active language from Astro's currentLocale (falls back to th).
+export function getLang(astro: { currentLocale?: string }): Lang {
+  const l = astro.currentLocale ?? "";
+  return (languages as readonly string[]).includes(l) ? (l as Lang) : "th";
+}
+
+// URL prefix for a language: "" for the default (th), otherwise "/en", "/zh".
+export function localePrefix(lang: Lang): string {
+  return lang === "th" ? "" : `/${lang}`;
+}
+
+// Locale-bound translator for use in .astro frontmatter:
+//   const t = useTranslate(Astro);   →   t("key") renders in the page's language.
+// Keeps every existing t("key") call site working — only the import changes.
+export function useTranslate(astro: { currentLocale?: string }): (key: string) => string {
+  const lang = getLang(astro);
+  return (key: string) => t(key, lang);
+}
+
+// Rewrite the current path to its equivalent in `target` language, so the
+// language switcher links to the same page in another language.
+//   ("/en/province/nan", "en", "zh") → "/zh/province/nan"
+//   ("/en/province/nan", "en", "th") → "/province/nan"
+export function switchLocalePath(pathname: string, current: Lang, target: Lang): string {
+  const cur = localePrefix(current);
+  let rest = pathname;
+  if (cur && (rest === cur || rest.startsWith(cur + "/"))) rest = rest.slice(cur.length);
+  if (!rest.startsWith("/")) rest = "/" + rest;
+  return (localePrefix(target) + rest) || "/";
+}
+
+// The three switcher links for the current page (label + href + active flag).
+export function localeUrls(astro: { url: URL; currentLocale?: string }) {
+  const current = getLang(astro);
+  return languages.map((lang) => ({
+    lang,
+    label: LANG_LABEL[lang],
+    href: switchLocalePath(astro.url.pathname, current, lang),
+    active: lang === current,
+  }));
+}
+
+export const LANG_LABEL: Record<Lang, string> = { th: "ไทย", en: "EN", zh: "中文" };

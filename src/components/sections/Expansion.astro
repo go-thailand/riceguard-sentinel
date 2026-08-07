@@ -4,7 +4,10 @@ import MapLegend from "../MapLegend.astro";
 import ProvinceModal from "../ProvinceModal.astro";
 import ProvinceData from "../ProvinceData.astro";
 import { provinces } from "../../data/provinces";
-import { t } from "../../i18n/ui";
+import { useTranslate, getLang, localePrefix } from "../../i18n/ui";
+
+const t = useTranslate(Astro);
+const base = localePrefix(getLang(Astro)); // "" for th, "/en", "/zh"
 ---
 
 <section id="expansion" class="rg-section">
@@ -77,7 +80,7 @@ import { t } from "../../i18n/ui";
           <h3 class="rg-modal-title" data-i18n="map.modal.title">{t("map.modal.title")}</h3>
         </div>
         <div class="rg-modal-head-actions">
-          <a class="rg-modal-fs" href="/research-map" aria-label="ขยายเต็มจอ" title="ขยายเต็มจอ">
+          <a class="rg-modal-fs" href={`${base}/research-map`} aria-label="ขยายเต็มจอ" title="ขยายเต็มจอ">
             <Icon name="maximize" size={18} />
           </a>
           <button type="button" class="rg-modal-close" data-modal-close aria-label="ปิด">

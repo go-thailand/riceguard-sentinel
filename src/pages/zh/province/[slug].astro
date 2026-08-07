@@ -1,7 +1,7 @@
 ---
-// Thai province detail pages (served at "/province/<slug>").
-import ProvincePage from "../../components/ProvincePage.astro";
-import { provinces } from "../../data/provinces";
+// Chinese province detail pages (served at "/zh/province/<slug>").
+import ProvincePage from "../../../components/ProvincePage.astro";
+import { provinces } from "../../../data/provinces";
 
 export function getStaticPaths() {
   return provinces.map((province) => ({
