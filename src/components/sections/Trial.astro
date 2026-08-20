@@ -8,7 +8,7 @@ const lang = getLang(Astro);
 const stats = [
   { value: "pH 4.7", key: "trial.stat0.th" },
   { value: "57%", key: "trial.stat1.th" },
-  { value: "36 ไร่", key: "trial.stat2.th" },
+  { value: "36", unit: "unit.rai", key: "trial.stat2.th" },
 ];
 
 const compare = [
@@ -49,7 +49,7 @@ const barHeight = (ph: number) => Math.round(((ph - 4) / 3) * 100);
           {
             stats.map((s) => (
               <div class="rg-trial-stat">
-                <div class="rg-trial-value">{s.value}</div>
+                <div class="rg-trial-value">{s.unit ? `${s.value} ${t(s.unit)}` : s.value}</div>
                 <div class="rg-trial-th">
                   <span data-i18n={s.key}>{t(s.key)}</span>
                 </div>
