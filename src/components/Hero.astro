@@ -1,8 +1,9 @@
 ---
 import Icon from "./Icon.astro";
-import { useTranslate } from "../i18n/ui";
+import { useTranslate, getLang, getLocalizedImg } from "../i18n/ui";
 
 const t = useTranslate(Astro);
+const lang = getLang(Astro);
 
 const stats = [
   { value: "20–30%", key: "hero.stat0.th", en: "Water saved" },
@@ -41,7 +42,7 @@ const stats = [
     <div class="rg-hero-media" data-reveal data-reveal-delay="2">
       <div class="washed rg-hero-imgwrap rg-float">
         <img
-          src="/assets/img/hero-device.webp"
+          src={getLocalizedImg("/assets/img/01.webp", lang)}
           alt="สถานี Gen 4 ในนาข้าวไทย"
           loading="eager"
           width="643"

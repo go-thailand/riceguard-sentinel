@@ -1,9 +1,10 @@
 ---
 import Icon from "../Icon.astro";
 import Modal from "../Modal.astro";
-import { useTranslate } from "../../i18n/ui";
+import { useTranslate, getLang, getLocalizedImg } from "../../i18n/ui";
 
 const t = useTranslate(Astro);
+const lang = getLang(Astro);
 
 const specs = [
   { icon: "ruler", value: "4 m", key: "device.spec0.th" },
@@ -46,7 +47,7 @@ const fullSpecs = [
     <div class="rg-device-grid">
       <div class="rg-device-imgwrap" data-reveal>
         <img
-          src="/assets/img/device-render.webp"
+          src={getLocalizedImg("/assets/img/05.webp", lang)}
           alt="สถานี Gen 4 — เสาปริซึมหกเหลี่ยมบิด สูง 4 เมตร มงกุฎโซลาร์สองหน้า"
           loading="lazy"
           width="607"
