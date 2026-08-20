@@ -1,9 +1,10 @@
 ---
 import SectionHeader from "../SectionHeader.astro";
 import Icon from "../Icon.astro";
-import { useTranslate } from "../../i18n/ui";
+import { useTranslate, getLang, getLocalizedImg } from "../../i18n/ui";
 
 const t = useTranslate(Astro);
+const lang = getLang(Astro);
 
 const layers = [
   { icon: "radio", key: "system.layer0.title", en: "Edge Acquisition" },
@@ -51,7 +52,7 @@ const layers = [
 
     <div class="rg-diagram-wrap" data-reveal>
       <img
-        src="/assets/img/ai-system-diagram.webp"
+        src={getLocalizedImg("/assets/img/06_arch.webp", lang)}
         alt="ภาพรวมระบบ AI ของ RiceGuard"
         loading="lazy"
         width="1800"

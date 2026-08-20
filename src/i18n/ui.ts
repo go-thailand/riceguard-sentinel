@@ -822,3 +822,57 @@ export function localeUrls(astro: { url: URL; currentLocale?: string }) {
 }
 
 export const LANG_LABEL: Record<Lang, string> = { th: "ไทย", en: "EN", zh: "中文" };
+
+// ============================================================================
+// IMAGE LOCALIZATION HELPER (translated diagrams — EN/ZH)
+// The translated diagrams live entirely inside
+// public/assets/img/img-translate-EN-ZH/ as "<base>_<lang>.png" — there is NO
+// copy in the /assets/img root. Not every base has all three languages, so each
+// entry declares exactly which locales exist on disk; a missing locale falls
+// back to TH, then to whatever copy is present, so a page never 404s. Any path
+// whose base isn't listed here is returned untouched (photos, logo, …).
+// ============================================================================
+
+// Folder holding the translated diagrams.
+const IMG_TRANSLATE_DIR = "/assets/img/img-translate-EN-ZH";
+
+// base filename → { ext, locales that actually have a file on disk }.
+// Update this when new translated diagrams are added or completed.
+const TRANSLATED_IMG: Record<string, { ext: string; locales: Lang[] }> = {
+  "01": { ext: ".webp", locales: ["th", "en", "zh"] },
+  "02_info": { ext: ".webp", locales: ["th", "en", "zh"] },
+  "04": { ext: ".webp", locales: ["th", "en", "zh"] },
+  "05": { ext: ".webp", locales: ["th", "en", "zh"] },
+  "06_arch": { ext: ".webp", locales: ["th", "en", "zh"] },
+  "07": { ext: ".webp", locales: ["th", "en", "zh"] },
+  "story-gen3": { ext: ".webp", locales: ["th", "en", "zh"] },
+};
+
+// Resolve an image path to the copy for `currentLocale`. For a listed diagram it
+// returns the file in IMG_TRANSLATE_DIR, falling back requested → th → any when
+// the exact locale is missing. Non-diagram paths pass through unchanged.
+//   getLocalizedImg("/assets/img/06_arch.png", "zh") → "/assets/img/img-translate-EN-ZH/06_arch_zh.png"
+//   getLocalizedImg("/assets/img/06_arch.png", "en") → "/assets/img/img-translate-EN-ZH/06_arch_th.png"  (no _en → th)
+//   getLocalizedImg("/assets/img/hero-device.webp", "en") → "/assets/img/hero-device.webp"  (not a diagram)
+export function getLocalizedImg(originalPath: string, currentLocale: string): string {
+  const filename = originalPath.split("/").pop() ?? originalPath;
+  const dot = filename.lastIndexOf(".");
+  const stem = dot === -1 ? filename : filename.slice(0, dot);
+  const base = stem.replace(/_(th|en|zh)$/i, ""); // strip any language suffix
+
+  const entry = TRANSLATED_IMG[base];
+  if (!entry) return originalPath; // not a translated diagram → leave as-is
+
+  const lang: Lang = (languages as readonly string[]).includes(currentLocale)
+    ? (currentLocale as Lang)
+    : "th";
+
+  // Prefer the requested language; else TH; else whatever copy exists.
+  const pick = entry.locales.includes(lang)
+    ? lang
+    : entry.locales.includes("th")
+      ? "th"
+      : entry.locales[0];
+
+  return `${IMG_TRANSLATE_DIR}/${base}_${pick}${entry.ext}`;
+}

@@ -1,8 +1,9 @@
 ---
 import SectionHeader from "../SectionHeader.astro";
-import { useTranslate } from "../../i18n/ui";
+import { useTranslate, getLang, getLocalizedImg } from "../../i18n/ui";
 
 const t = useTranslate(Astro);
+const lang = getLang(Astro);
 
 const stats = [
   { value: "pH 4.7", key: "trial.stat0.th" },
@@ -33,7 +34,7 @@ const barHeight = (ph: number) => Math.round(((ph - 4) / 3) * 100);
     <div class="rg-trial-grid">
       <div class="washed rg-trial-imgwrap" data-reveal>
         <img
-          src="/assets/img/trial-map.webp"
+          src={getLocalizedImg("/assets/img/04.webp", lang)}
           alt="แผนที่ pH ดิน เปรียบเทียบแปลงควบคุมกับแปลง Sentinel"
           loading="lazy"
           width="416"

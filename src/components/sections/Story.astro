@@ -2,9 +2,10 @@
 import SectionHeader from "../SectionHeader.astro";
 import Icon from "../Icon.astro";
 import Modal from "../Modal.astro";
-import { useTranslate } from "../../i18n/ui";
+import { useTranslate, getLang, getLocalizedImg } from "../../i18n/ui";
 
 const t = useTranslate(Astro);
+const lang = getLang(Astro);
 
 // Gen 3 → Gen 4: evidence-driven redesign rows (i18n keys)
 const beforeAfter = [
@@ -62,7 +63,7 @@ const problemIcons = ["droplets", "battery-charging", "alert-triangle"];
         </div>
         <div class="washed rg-story-imgwrap">
           <img
-            src="/assets/img/story-gen3.webp"
+            src={getLocalizedImg("/assets/img/story-gen3.webp", lang)}
             alt="Gen 3 ที่ติดตั้งจริง ที่ระโนด สงขลา"
             loading="lazy"
             width="766"
@@ -97,7 +98,7 @@ const problemIcons = ["droplets", "battery-charging", "alert-triangle"];
         </table>
         <div class="washed rg-story-imgwrap">
           <img
-            src="/assets/img/story-gen4.webp"
+            src={getLocalizedImg("/assets/img/07.webp", lang)}
             alt="สรุป Gen 4"
             loading="lazy"
             width="766"
