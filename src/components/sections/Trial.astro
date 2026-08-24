@@ -34,6 +34,8 @@ const barHeight = (ph: number) => Math.round(((ph - 4) / 3) * 100);
     <div class="rg-trial-grid">
       <div class="washed rg-trial-imgwrap" data-reveal>
         <img
+          class="rg-zoomable"
+          data-lightbox
           src={getLocalizedImg("/assets/img/04.webp", lang)}
           alt="แผนที่ pH ดิน เปรียบเทียบแปลงควบคุมกับแปลง Sentinel"
           loading="lazy"
