@@ -3,6 +3,7 @@ import "../styles/style.css";
 import "../styles/layout.css";
 import "../styles/components.css";
 import { getLang, localeUrls, t } from "../i18n/ui";
+import ImageLightbox from "../components/ImageLightbox.astro";
 
 interface Props {
   title?: string;
@@ -52,6 +53,9 @@ const xDefault = origin + (alternates.find((a) => a.lang === "th")?.href ?? "/")
     <div class="rg-page">
       <slot />
     </div>
+
+    <!-- Global image lightbox — any <img data-lightbox> opens it. -->
+    <ImageLightbox />
 
     <script>
       import "../scripts/ui.js";
